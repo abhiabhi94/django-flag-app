@@ -27,7 +27,7 @@ $ source venv/bin/activate
 To run tests against a particular `python` and `django` version installed inside your virtual environment, you may use:
 
 ```bash
-(venv) $ pytest # `python manage.py test` or `make test` also work
+(venv) $ python manage.py test
 
 ```
 
