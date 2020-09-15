@@ -1,0 +1,53 @@
+
+{% extends 'post/postlist.html' %}
+{% load flag_tags %}
+
+{% block postcontent %}
+
+<div class="row">
+    <div class="col-9">
+        <section id="postdetail" class="mb-5">
+            <div class="js-author-card card mb-5 px-lg-4">
+                <div class="card-body">
+                    <div class="d-none d-sm-inline-block" style="max-width: 120px;">
+                        <img class="w-100 mb-4 align-baseline rounded-circle" src="{{post.author.userprofile.image.url}}" alt="" >
+                    </div>
+                    <div class="d-inline-block ml-4">
+                        <h6>Author:
+                            <span class="h5">
+                                <a class="nounderline text-capitalize badge badge-light" href="{% url 'profile:profile' username=post.author.username %}">
+                                    <strong>{{ post.author.username }}</strong>
+                                </a>
+                            </span>
+                        </h6>
+                        <h6>Created on: {{post.date|date:"N d, Y."}}</h6>
+                        <h6>Latest update: {{post.editdate|timesince}}</h6>
+                        <div class="my-2">
+                        </div>
+                        <a href="{% url 'post:postlist' %}" class="btn btn-outline-success btn-sm">posts</a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card px-lg-4">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h1 class="text-center text-wrap"><strong>{{post.title}}</strong></h1>
+                    </div>
+                    {% render_flag_form for post user %}
+                    <div class="card-text">
+                        <hr/>
+                        <div class="blockquote text-wrap mt-4">
+                            <p class="mb-0">{{post.body|safe}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-3">
+
+    </div>
+
+</div>
+{% endblock %}

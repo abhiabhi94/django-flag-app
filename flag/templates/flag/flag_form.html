@@ -1,0 +1,62 @@
+{% load i18n %}
+<div class="report-modal-form-combined">
+  <div class="flag-report-icon"
+    data-url="{% url 'flag:flag' %}"
+    data-app-name="{{ app_name }}"
+    data-model-name="{{ model_name }}"
+    data-model-id="{{ model_id }}"
+    data-csrf="{{ csrf_token }}">
+    <span
+      title="{% if has_flagged %}{% trans "Remove flag" %}{% else %}{% trans "Report content" %}{% endif %}">
+        {% block flag_icon %}
+        {% include "flag/flag_icon.html" %}
+        {% endblock flag_icon %}
+    </span>
+  </div>
+  <div
+    class="flag-report-modal">
+    <div class="report-modal-content">
+      <span
+        class="report-modal-close">&times;</span>
+      <div class="report-modal-flag-form">
+        <form
+          class="m-2 p-1 report-modal-form">
+          <legend>{% trans "Report this content" %}</legend>
+            {% csrf_token %}
+            <table>
+                <tr class="report-modal-form-reasons">
+                {% for reason in flag_reasons  %}
+                  <input
+                    type="radio"
+                    value={{ reason.value }}
+                    name="reason" required>
+                  <label for="{{ reason.reason }}">{{ reason.reason }}</label><br>
+                  {% if forloop.last %}
+                    <p
+                      class="last-flag-reason"
+                      style="visibility:hidden;">{{ reason.value }}</p>
+                  {% endif %}
+                {% endfor %}
+                </tr>
+                <tr>
+                  <td>
+                    <textarea
+                      class="report-modal-form-info"
+                      rows="10"
+                      cols="40"
+                      name="info"></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="submit"
+                      class="btn btn-sm btn-danger mt-2"
+                      value={% trans "Submit" %} />
+                  </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+  </div>
+</div>

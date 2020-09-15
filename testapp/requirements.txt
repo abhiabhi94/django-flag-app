@@ -1,0 +1,5 @@
+django
+djangorestframework
+coverage
+flake8
+tox

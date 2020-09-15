@@ -1,0 +1,33 @@
+<nav class="js-navbar navbar navbar-expand-md {% if current_view == 'home' %}navbar-stick{% else %}fixed-top{% endif %} navbar-light px-4 px-md-3">
+    <a class="navbar-brand" href="">{{ user.username|capfirst }}</a>
+    <div class="collapse navbar-collapse" id="navbarText">
+        
+        <ul class="nav navbar-nav navbar mb-3 mb-md-auto">
+            <li class="">
+                <a class="nav-link" href="{% url 'post:postlist'%}">
+                    Post
+                </a>
+            </li>
+            <li class="">
+                <a class="nav-link" href="{% url 'post:createpost'%}">
+                    Create Post
+                </a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="">
+                    <a class="nav-link" href="{% url 'profile:profile' user.username %}">Profile</a>
+                </li>
+                <li class="">
+                    <a class="nav-link" href="{% url 'profile:logout'%}">Logout</a>
+                </li>
+            {% else %}
+                <li class="">
+                    <a class="nav-link" href="{% url 'profile:login'%}">Login</a>
+                </li>
+                <li class="">
+                    <a class="nav-link" href="{% url 'profile:signup'%}">Signup</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

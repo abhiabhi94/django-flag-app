@@ -1,0 +1,90 @@
+.m-2 {
+    margin: 0.5rem!important;
+}
+.p1 {
+    margin: 0.25rem!important;
+}
+.flag-report-icon {
+    float: right;
+    border: inherit;
+    background: inherit;
+}
+.flag-report-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 5rem;
+    left: 0;
+    top: 0;
+    width: 80%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.report-modal-content {
+    position: relative;
+    background-color: #f7f7f7;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 90%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+.report-modal-close {
+    color: #18121e;
+    float: right;
+    margin-right: 10px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.report-modal-close:hover,
+.report-modal-close:focus {
+    color: #f7f;
+    text-decoration: none;
+    cursor: pointer;
+}
+.report-modal-flag-form {
+    padding: 0.1rem 1rem;
+    background-color: #fefefe;
+}
+.report-modal-flag-form form {
+    font-size: 1rem;
+}
+.report-modal-flag-form form label {
+    padding: 5px 10px;
+}
+.report-modal-form-info {
+    padding: 0.1rem 1rem;
+    background-color: #f7f7f7;
+    display: none;
+}
+.user-has-flagged {
+    fill: #ffc96c;
+}
+.user-has-not-flagged {
+    fill: none;
+}
