@@ -25,9 +25,9 @@ def render_flag_form(obj, user):
     """
     A template tag used for adding flag form in templates
 
-    To render the flag form for a post model inside the app posts'
+    To render the flag form for a post model inside the app posts
 
-    Usage: `{% render_flag_form for post user %}`
+    Usage: `{% render_flag_form post user %}`
     """
     return {
         'app_name': get_app_name(obj),

@@ -15,7 +15,7 @@
                     <div class="d-inline-block ml-4">
                         <h6>Author:
                             <span class="h5">
-                                <a class="nounderline text-capitalize badge badge-light" href="{% url 'profile:profile' username=post.author.username %}">
+                                <a class="nounderline text-capitalize badge badge-light" href="{% url 'profile:profile' username=post.user.username %}">
                                     <strong>{{ post.author.username }}</strong>
                                 </a>
                             </span>
@@ -34,7 +34,7 @@
                     <div class="card-title">
                         <h1 class="text-center text-wrap"><strong>{{post.title}}</strong></h1>
                     </div>
-                    {% render_flag_form for post user %}
+                    {% render_flag_form post user %}
                     <div class="card-text">
                         <hr/>
                         <div class="blockquote text-wrap mt-4">

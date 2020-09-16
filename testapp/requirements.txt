@@ -3,3 +3,4 @@ djangorestframework
 coverage
 flake8
 tox
+Pillow

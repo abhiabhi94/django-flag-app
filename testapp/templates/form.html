@@ -1,4 +1,3 @@
-{% load comment_tags %}
 {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
 {% endfor %}
@@ -20,10 +19,7 @@
         {% if form.is_bound %}
             {% if field.errors %}
                 {% if field.label == 'Tag' %}
-                    {% render_field field class="form-control form-control-sm is-invalid d-none" %}
                     {% include 'tag/tag.html' %}
-                {% else %}
-                    {% render_field field class="form-control form-control-sm is-invalid" %}
                 {% endif %}
                 {% for error in field.errors %}
                   <div class="invalid-feedback">
@@ -32,21 +28,14 @@
                 {% endfor %}
             {% else %}
                 {% if field.label == 'Tag' %}
-                    {% render_field field class="form-control form-control-sm is-valid d-none" %}
                     {% include 'tag/tag.html' %}
-                {% else %}
-                    {% render_field field class="form-control form-control-sm is-valid" %}
                 {% endif %}
             {% endif %}
         {% else %}
             {% if field.label == 'Tag' %}
-                {% render_field field class="form-control form-control-sm d-none" %}
                 {% include 'tag/tag.html' %}
-            {% else %}
-                {% render_field field class="form-control form-control-sm" %}
             {% endif %}
         {% endif %}
-
         {% if field.help_text %}
             <small class="form-text text-muted">{{ field.help_text | safe }}</small>
         {% endif %}

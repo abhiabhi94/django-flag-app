@@ -16,4 +16,4 @@ docs/_build
 *.swp
 
 # database
-*/db.sqlite*
+*db.sqlite*

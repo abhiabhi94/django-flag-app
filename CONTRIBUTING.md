@@ -15,9 +15,12 @@ $ git clone YOUR_FORKED_REPO_URL
 $ python3 -m venv venv
 # activate the virtual environment
 $ source venv/bin/activate
-# install dependencies in development mode
+# install dependencies
 (venv) $ pip install -e . -r testapp/requirements.txt
-
+# migrate the migrations to the database
+(venv) $ python manage.py migrate
+# create data
+(venv) $ python manage.py create_initial_data
 # start the development server
 (venv) $ python manage.py runserver
 ```
@@ -28,7 +31,6 @@ To run tests against a particular `python` and `django` version installed inside
 
 ```bash
 (venv) $ python manage.py test
-
 ```
 
 To run tests against all supported `python` and `django` versions, you may run:
