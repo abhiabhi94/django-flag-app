@@ -23,9 +23,9 @@ $ git clone git://github.com/abhiabhi94/django-flag-app.git
 $ cd django-flag-app
 $ python setup.py install
 ```
-### Using it
+### Usage
 
-- #### Step 1 - Add app
+- #### Add app
 
 To enable `django_flag_app` in your project you need to add it to `INSTALLED_APPS` in your projects `settings.py` file:
 
@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     ...
 )
 ```
-- #### Step 2 - Add url
+- #### Add url
 
 In `urls.py`:
 
@@ -52,7 +52,7 @@ urlpatterns = patterns(
     )
 ```
 
-- #### Step 3 - Migrate
+- #### Migrate
 
 Run the migrations to add the new models to your database:
 
@@ -61,7 +61,7 @@ Run the migrations to add the new models to your database:
 python manage.py migrate flag
 ```
 
-- #### Step 4 - Connect the flag model with the target model
+- #### Connect the flag model with the target model
 
 In `models.py` add the field **`flags`** as a `GenericRelation` field to the required model.
 
@@ -71,7 +71,7 @@ E.g. `Post` model, as shown below:
 
 from django.contrib.contenttypes.fields import GenericRelation
 
-from flag.models import Comment
+from flag.models import Flag
 
 
 class Post(models.Model):
@@ -79,18 +79,18 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField()
     # the field name should be flags
-    flags = GenericRelation(Comment)
+    flags = GenericRelation(Flag)
 ```
 
 
-- #### Step 5 - Adding template tag:
+- #### Use template tag:
 
 `render_flag_form` tag requires 2 required positional arguments:
 
     1. Instance of the targeted model.
     2. User object.
 
-To render the `flag` form for a the instance `post`, place this inside your detail view, perhaps in some template of the sort `postdetail.html`
+To render the `flag` form for a the instance `post`, place this inside your detail view, perhaps in some template of the sort `postdetail.html`.
 
 ```jinja
 {% render_flag_form post user %}
@@ -98,4 +98,4 @@ To render the `flag` form for a the instance `post`, place this inside your deta
 
 ### Contributing
 
-Please see the instructions at [Contributing](./CONTRIBUTING.md)
+Please see the instructions at [Contributing](./CONTRIBUTING.md).
