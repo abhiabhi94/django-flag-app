@@ -9,9 +9,10 @@ urlpatterns = [
     # flag app
     path('flag/', include('flag.urls')),
     # API urls
-    # path('api/', include('testapp.post.api.urls')),
-    # path('api/', include('post.api.urls')),
-    # path('api-auth/', include('rest_framework.urls')),
+    path('api/', include('testapp.post.api.urls')),
+    path('api/', include('testapp.post.api.urls')),
+    path('api/', include('flag.api.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('', include('testapp.post.urls')),
 ]
 if settings.DEBUG:
