@@ -137,3 +137,15 @@ class BaseFlagMixinsTest(BaseFlagTest):
             'model_name': 'Post',
             'model_id': self.post_1.id
         }
+
+
+class BaseFlagUtilsTest(BaseFlagMixinsTest):
+    def setUp(self):
+        super().setUp()
+        self.data = {
+            'app_name': 'post',
+            'model_name': 'Post',
+            'model_id': self.post_1.id,
+            'reason': FlagInstance.reason_values[0],
+            'info': ''
+        }

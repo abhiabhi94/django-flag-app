@@ -75,7 +75,7 @@ from flag.models import Flag
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     title = models.CharField(max_length=200)
     body = models.TextField()
     # the field name should be flags

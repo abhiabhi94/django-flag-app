@@ -9,7 +9,7 @@ class TestSetFlag(BaseFlagViewTest):
         super().setUpTestData()
         cls.post = cls.create_post()
 
-    def test_set_flag_for_flagging(self):
+    def test_flagging_successfully(self):
         data = self.data.copy()
         post = self.post
         data['model_id'] = post.id
@@ -31,7 +31,7 @@ class TestSetFlag(BaseFlagViewTest):
                 )
         self.assertEqual(created, False)
 
-    def test_set_flag_for_flagging_flagged_object(self):
+    def test_flagging_flagged_object(self):
         data = self.data.copy()
         post = self.post
         data['model_id'] = post.id
@@ -44,7 +44,7 @@ class TestSetFlag(BaseFlagViewTest):
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(response.json(), response_data)
 
-    def test_set_flag_for_flagging_unflagged_object(self):
+    def test_flagging_unflagged_object(self):
         post = self.post
         data = self.data.copy()
         data['model_id'] = post.id
@@ -57,7 +57,7 @@ class TestSetFlag(BaseFlagViewTest):
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(response.json(), response_data)
 
-    def test_set_flag_for_unflagging(self):
+    def test_unflagging_successfully(self):
         # un-flag => no reason is passed and the comment must be already flagged by the user
         post = self.post
         self.set_flag(model_obj=post)
