@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from tests.base import BaseFlagViewTest, Flag, FlagInstance
+from tests.base import BaseFlagViewTest, Client, Flag, FlagInstance
 
 
 class TestSetFlag(BaseFlagViewTest):
@@ -9,11 +9,16 @@ class TestSetFlag(BaseFlagViewTest):
         super().setUpTestData()
         cls.post = cls.create_post()
 
+    def setUp(self):
+        super().setUp()
+        self.client = Client(HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.client.force_login(self.user_1)
+
     def test_flagging_successfully(self):
         data = self.data.copy()
         post = self.post
         data['model_id'] = post.id
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         response_data = {
             'status': 0,
             'flag': 1,
@@ -36,7 +41,7 @@ class TestSetFlag(BaseFlagViewTest):
         post = self.post
         data['model_id'] = post.id
         self.set_flag(post)
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         response_data = {
             'status': 1,
             'msg': [f'This content has already been flagged by the user ({self.user_1.username})']
@@ -49,7 +54,7 @@ class TestSetFlag(BaseFlagViewTest):
         data = self.data.copy()
         data['model_id'] = post.id
         data.pop('reason')
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         response_data = {
             'status': 1,
             'msg': [f'This content has not been flagged by the user ({self.user_1.username})']
@@ -64,7 +69,7 @@ class TestSetFlag(BaseFlagViewTest):
         data = self.data.copy()
         data['model_id'] = post.id
         data.pop('reason')
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         response_data = {
             'status': 0,
             'msg': 'The content has been unflagged successfully.'
@@ -85,7 +90,7 @@ class TestSetFlag(BaseFlagViewTest):
         """Test whether unauthenticated user can create/delete flag using view"""
         self.client.logout()
         url = self.url
-        response = self.request('post', url, data=self.data)
+        response = self.client.post(url, data=self.data)
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '{}?next={}'.format(settings.LOGIN_URL, url))
@@ -95,7 +100,7 @@ class TestSetFlag(BaseFlagViewTest):
         data = self.data.copy()
         reason = -1
         data['reason'] = reason
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         response_data = {
             'status': 1,
             'msg': [f'{reason} is an invalid reason']
@@ -109,7 +114,7 @@ class TestSetFlag(BaseFlagViewTest):
         data = self.data.copy()
         reason = FlagInstance.reason_values[-1]
         data.update({'reason': reason})
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         response_data = {
             'status': 1,
             'msg': ['Please supply some information as the reason for flagging']
@@ -125,7 +130,7 @@ class TestSetFlag(BaseFlagViewTest):
         reason = FlagInstance.reason_values[-1]
         info = 'weird'
         data.update({'reason': reason, 'info': info, 'model_id': post.id})
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         response_data = {
             'status': 0,
             'flag': 1,

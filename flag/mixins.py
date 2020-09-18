@@ -1,56 +1,113 @@
-import json
+from abc import ABCMeta, abstractmethod
 
 from django.contrib.contenttypes.models import ContentType
+from django.http.response import JsonResponse
+from django.utils.translation import gettext_lazy as _
 
 from flag.exceptions import FlagBadRequest
 
 
-class ContentTypeMixin:
+class BaseMixin:
+    __metaclass__ = ABCMeta
+    api = False
+    error = None
+
     def dispatch(self, request, *args, **kwargs):
         try:
-            data = json.loads(request.body.decode('utf-8'))
-        except json.decoder.JSONDecodeError:
-            return FlagBadRequest('data sent is either empty or is not of an appropriate format')
+            self.validate(request)
+        except FlagBadRequest as exc:
+            return JsonResponse({'type': _('error'), 'detail': _(exc.detail)}, status=400)
+        return super().dispatch(request, *args, **kwargs)
+
+    @abstractmethod
+    def validate(self, request, *args, **kwargs):
+        pass
+
+    def raise_error(self):
+        raise FlagBadRequest(self.error)
+
+
+class ContentTypeMixin(BaseMixin):
+    model_obj = None
+    data = None
+
+    def validate_data(self, request):
+        data = request.POST
+
         if not data:
-            return FlagBadRequest('no data passed')
+            self.error = 'no data passed'
+            self.raise_error()
 
-        app_name = data.get('app_name', None)
+        return data.dict()
+
+    def validate_app_name(self, app_name):
         if not app_name:
-            return FlagBadRequest('app name is required')
-
-        model_name = data.get('model_name', None)
-        if not model_name:
-            return FlagBadRequest('model name is required')
-
-        model_id = data.get('model_id', None)
-        if not model_id:
-            return FlagBadRequest('model id is required')
+            self.error = 'app name is required'
+            self.raise_error()
 
         if not ContentType.objects.filter(app_label=app_name).exists():
-            return FlagBadRequest(f'{app_name} is not a valid app name')
+            self.error = f'{app_name} is not a valid app name'
+            self.raise_error()
 
+        return app_name
+
+    def validate_model_name(self, model_name):
+        if not model_name:
+            self.error = 'model name is required'
+            self.raise_error()
+
+        return model_name
+
+    def validate_model_id(self, model_id):
+        if not model_id:
+            self.error = 'model id is required'
+            self.raise_error()
         try:
-            ctype = ContentType.objects.get(model=model_name.lower()).model_class()
-            model_class = ctype.objects.filter(id=model_id)
-            if not model_class.exists() and model_class.count() != 1:
-                return FlagBadRequest(f'{model_id} is not a valid model id for the model {model_name}')
-
-        except ContentType.DoesNotExist:
-            return FlagBadRequest(f'{model_name} is not a valid model name')
-
+            model_id = int(model_id)
         except ValueError:
-            return FlagBadRequest(f'model id must be an integer, {model_id} is not')
+            self.error = f'model id must be an integer, {model_id} is NOT'
+            self.raise_error()
 
-        self.app_name = app_name
-        self.model_name = model_name
-        self.mode_id = model_id
+        return model_id
+
+    def validate_content_type_object(self, app_name, model_name):
+        try:
+            ct_object = ContentType.objects.get(model=model_name.lower(), app_label=app_name)
+        except ContentType.DoesNotExist:
+            self.error = f'{model_name} is NOT a valid model name'
+            self.raise_error()
+
+        return ct_object
+
+    def validate_model_object(self, app_name, model_name, model_id):
+        ct_object = self.validate_content_type_object(app_name, model_name)
+        model_class = ct_object.model_class()
+        model_query = model_class.objects.filter(id=model_id)
+        if not model_query.exists() and model_query.count() != 1:
+            self.error = f'{model_id} is NOT a valid model id for the model {model_name}'
+            self.raise_error()
+        return model_query.first()
+
+    def validate(self, request, *args, **kwargs):
+        super().validate(request, *args, **kwargs)
+        data = self.validate_data(request)
+        app_name = data.get('app_name', None)
+        self.app_name = self.validate_app_name(app_name)
+
+        model_name = data.get('model_name', None)
+        self.model_name = self.validate_model_name(model_name)
+
+        model_id = data.get('model_id', None)
+        self.model_id = self.validate_model_id(model_id)
+        self.model_obj = self.validate_model_object(self.app_name, self.model_name, self.model_id)
+
+        # initialize data to be used by view
         self.data = data
-        return super().dispatch(request, *args, **kwargs)
 
 
-class RequestMixin:
-    def dispatch(self, request, *args, **kwargs):
-        if (not request.META.get('HTTP_X_REQUESTED_WITH', None) == 'XMLHttpRequest') or (not request.method == 'POST'):
-            return FlagBadRequest('Only POST AJAX requests are allowed')
-
-        return super().dispatch(request, *args, **kwargs)
+class AJAXMixin(BaseMixin):
+    def validate(self, request, *args, **kwargs):
+        super().validate(request, *args, **kwargs)
+        if not request.META.get('HTTP_X_REQUESTED_WITH', None) == 'XMLHttpRequest':
+            self.error = 'Only AJAX requests are allowed'
+            self.raise_error()

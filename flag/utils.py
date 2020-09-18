@@ -44,13 +44,11 @@ def process_flagging_request(*, user, model_obj, data):
             **This key will only be present when request succeeds.**
             `flag`(int): Non-Zero(1) indicates that flag is created.
     """
-    Flag = apps.get_model('flag', 'Flag')
     FlagInstance = apps.get_model('flag', 'FlagInstance')
-    flag = Flag.objects.get_flag(model_obj)
 
     response = {'status': 1}
     try:
-        if FlagInstance.objects.set_flag(user, flag, **data):
+        if FlagInstance.objects.set_flag(user, model_obj, **data):
             response['msg'] = _(
                 'The content has been flagged successfully. '
                 'A moderator will review it shortly.'

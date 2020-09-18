@@ -1,102 +1,121 @@
-from tests.base import BaseFlagMixinsTest, Client
+from django.views import View
+from django.http.response import JsonResponse
+
+from tests.base import BaseFlagMixinsTest, Post
+from flag.mixins import AJAXMixin, ContentTypeMixin
 
 
-class TestRequestMixin(BaseFlagMixinsTest):
+class MockedAJAXView(AJAXMixin, View):
+    pass
+
+
+class MockedContentTypeView(ContentTypeMixin, View):
+    def post(self, request, *args, **kwargs):
+        return JsonResponse({})
+
+
+class TestAJAXMixin(BaseFlagMixinsTest):
+    def setUp(self):
+        super().setUp()
+        self.view = MockedAJAXView()
+
     def test_non_ajax_response_post_required(self):
-        response = self.request('post', self.url)
+        request = self.factory.post(self.url)
+        response = self.view.dispatch(request)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), 'Only POST AJAX requests are allowed')
-
-    def test_ajax_get_request(self):
-        self.client = Client(HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        self.client.force_login(self.user_1)
-        response = self.request('get', self.url)
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), 'Only POST AJAX requests are allowed')
+        self.assertEqual(self.view.error, 'Only AJAX requests are allowed')
 
 
 class TestContentTypeMixin(BaseFlagMixinsTest):
     def setUp(self):
         super().setUp()
-        self.client = Client(HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        self.client.force_login(self.user_1)
+        self.view = MockedContentTypeView()
+
+    def get_response(self, data):
+        request = self.factory.post(self.url, data=data)
+        return self.view.dispatch(request)
 
     def test_without_any_data(self):
-        response = self.request('post', self.url)
+        request = self.factory.post(self.url)
+        response = self.view.dispatch(request)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), 'no data passed')
-
-    def test_with_invalid_data_format(self):
-        response = self.client.generic('post', self.url, data='abcd')
-
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.content.decode('utf-8'),
-            'data sent is either empty or is not of an appropriate format')
+        self.assertEqual(self.view.error, 'no data passed')
 
     def test_without_app_name(self):
         data = self.data.copy()
         data.pop('app_name')
-        response = self.request('post', self.url, data=data)
+        response = self.get_response(data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), 'app name is required')
+        self.assertEqual(self.view.error, 'app name is required')
 
     def test_without_model_name(self):
         data = self.data.copy()
         data.pop('model_name')
-        response = self.request('post', self.url, data=data)
+        response = self.get_response(data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), 'model name is required')
+        self.assertEqual(self.view.error, 'model name is required')
 
     def test_without_model_id(self):
         data = self.data.copy()
         data.pop('model_id')
-        response = self.request('post', self.url, data=data)
+        response = self.get_response(data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), 'model id is required')
+        self.assertEqual(self.view.error, 'model id is required')
 
     def test_invalid_app_name(self):
         data = self.data.copy()
         val = 'not exists'
         data['app_name'] = val
-        response = self.request('post', self.url, data=data)
+        response = self.get_response(data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), f'{val} is not a valid app name')
+        self.assertEqual(self.view.error, f'{val} is not a valid app name')
 
     def test_invalid_model_name(self):
         data = self.data.copy()
         val = 'not exists'
         data['model_name'] = val
-        response = self.request('post', self.url, data=data)
+        response = self.get_response(data)
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode('utf-8'), f'{val} is not a valid model name')
+        self.assertEqual(self.view.error, f'{val} is NOT a valid model name')
 
     def test_model_id_which_doesnt_exist(self):
         data = self.data.copy()
         val = 100
         data['model_id'] = val
-        response = self.request('post', self.url, data=data)
+        response = self.get_response(data)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.content.decode('utf-8'),
-            f'{val} is not a valid model id for the model {data["model_name"]}')
+            self.view.error,
+            f'{val} is NOT a valid model id for the model {data["model_name"]}')
 
     def test_non_integral_model_id(self):
         data = self.data.copy()
         val = 'c'
         data['model_id'] = val
-        response = self.request('post', self.url, data=data)
+        response = self.get_response(data)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.content.decode('utf-8'),
-            f'model id must be an integer, {val} is not')
+            self.view.error,
+            f'model id must be an integer, {val} is NOT')
+
+    def test_success(self):
+        data = self.data.copy()
+        data['model_id'] = str(data['model_id'])
+        response = self.get_response(data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(self.view.error)
+        self.assertEqual(self.view.data, data)
+        self.assertEqual(self.view.model_name, data['model_name'])
+        self.assertEqual(self.view.app_name, data['app_name'])
+        self.assertEqual(self.view.model_id, int(data['model_id']))
+        self.assertEqual(self.view.model_obj, Post.objects.get(id=data['model_id']))

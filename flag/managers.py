@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, models
 from django.utils.translation import gettext_lazy as _
 
-from flag.utils import get_content_type, get_model_object
+from flag.utils import get_content_type
 
 
 class FlagManager(models.Manager):
@@ -78,12 +78,7 @@ class FlagInstanceManager(models.Manager):
                 code='invalid'
             )
 
-    def set_flag(self, user, flag, **kwargs):
-        model_obj = get_model_object(
-            app_name=kwargs['app_name'],
-            model_name=kwargs['model_name'],
-            model_id=kwargs['model_id']
-        )
+    def set_flag(self, user, model_obj, **kwargs):
         Flag = apps.get_model('flag', 'Flag')
         flag_obj = Flag.objects.get_flag(model_obj)
         info = kwargs.get('info', None)

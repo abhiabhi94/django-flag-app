@@ -3,19 +3,14 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 
 from flag.mixins import ContentTypeMixin
-from flag.utils import get_model_object, process_flagging_request
+from flag.utils import process_flagging_request
 
 
 class SetFlag(ContentTypeMixin, APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        model_obj = get_model_object(
-            app_name=self.app_name,
-            model_name=self.model_name,
-            model_id=self.mode_id
-        )
-        response = process_flagging_request(user=request.user, model_obj=model_obj, data=self.data)
+        response = process_flagging_request(user=request.user, model_obj=self.model_obj, data=self.data)
         detail = {'detail': response['msg']}
 
         if response['status']:  # 1 indicates bad request

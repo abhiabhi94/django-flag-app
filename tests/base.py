@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.contenttypes.models import ContentType
@@ -87,11 +85,6 @@ class BaseFlagTest(TestCase):
             info=info
         )
 
-    def request(self, method: str, path: str, data=None, *args, **kwargs):
-        if not data:
-            data = ''
-        return self.client.generic(method, path, data=json.dumps(data), *args, **kwargs)
-
 
 class BaseFlagModelTest(BaseFlagTest):
     @classmethod
@@ -137,6 +130,7 @@ class BaseFlagMixinsTest(BaseFlagTest):
             'model_name': 'Post',
             'model_id': self.post_1.id
         }
+        self.factory = RequestFactory()
 
 
 class BaseFlagUtilsTest(BaseFlagMixinsTest):

@@ -17,7 +17,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         data = self.data.copy()
         post = self.post
         data['model_id'] = post.id
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(
@@ -39,7 +39,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         post = self.post
         data['model_id'] = post.id
         self.set_flag(post)
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
@@ -52,7 +52,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         data = self.data.copy()
         data['model_id'] = post.id
         data.pop('reason')
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
@@ -67,7 +67,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         data = self.data.copy()
         data['model_id'] = post.id
         data.pop('reason')
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()['detail'], 'The content has been unflagged successfully.')
@@ -84,7 +84,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         """Test whether unauthenticated user can create/delete flag using view"""
         self.client.logout()
         url = self.url
-        response = self.request('post', url, data=self.data)
+        response = self.client.post(url, data=self.data)
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -93,7 +93,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         data = self.data.copy()
         reason = -1
         data['reason'] = reason
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json()['detail'], [f'{reason} is an invalid reason'])
@@ -103,7 +103,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         data = self.data.copy()
         reason = FlagInstance.reason_values[-1]
         data.update({'reason': reason})
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json()['detail'], ['Please supply some information as the reason for flagging'])
@@ -115,7 +115,7 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         reason = FlagInstance.reason_values[-1]
         info = 'weird'
         data.update({'reason': reason, 'info': info, 'model_id': post.id})
-        response = self.request('post', self.url, data=data)
+        response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(
             response.json()['detail'],
