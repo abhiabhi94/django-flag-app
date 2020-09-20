@@ -1,6 +1,8 @@
+from unittest.mock import patch
+
 from django.contrib.contenttypes.models import ContentType
 
-from flag.utils import get_content_type, get_model_object, process_flagging_request
+from flag.utils import get_content_type, get_model_object, process_flagging_request, get_user_for_model
 from tests.base import BaseFlagUtilsTest, Post
 
 
@@ -19,6 +21,18 @@ class TestGetModelObject(BaseFlagUtilsTest):
         response = get_model_object(**data)
         post = Post.objects.get(id=data['model_id'])
         self.assertEqual(response, post)
+
+
+class TestGetUserForModel(BaseFlagUtilsTest):
+    def test_when_user_field_is_associated(self):
+        response = get_user_for_model(self.post_1)
+        self.assertEqual(response, self.post_1.user)
+
+    @patch('testapp.post.models.Post')
+    def test_when_user_field_is_not_associated(self, mocked_post_model):
+        mocked_post = mocked_post_model()
+        response = get_user_for_model(mocked_post)
+        self.assertEqual(response, None)
 
 
 class TestProcessFlaggingRequest(BaseFlagUtilsTest):

@@ -3,13 +3,14 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, models
 from django.utils.translation import gettext_lazy as _
 
-from flag.utils import get_content_type
+from flag.utils import get_content_type, get_user_for_model
 
 
 class FlagManager(models.Manager):
     def get_flag(self, model_obj):
         ctype = get_content_type(model_obj)
-        flag, __ = self.get_or_create(content_type=ctype, object_id=model_obj.id, creator=model_obj.user)
+        creator = get_user_for_model(model_obj)
+        flag, __ = self.get_or_create(content_type=ctype, object_id=model_obj.id, creator=creator)
         return flag
 
 
