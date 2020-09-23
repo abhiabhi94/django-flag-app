@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const hideModal = function (modal) {
     modal.style.display = 'none';
     modal.querySelector('form').reset();
+    modal.querySelector('textarea').style.display = 'none';
   };
 
   const showModal = function (e) {
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const lastFlagReason = flagForm.querySelector('.last-flag-reason');
     const flagInfo = flagForm.querySelector('.report-modal-form-info');
     flagForm.onchange = function (event) {
-      if (event.target.value === lastFlagReason.innerHTML) {
+      if (event.target.value === lastFlagReason.value) {
         flagInfo.required = true;
         flagInfo.style.display = "block";
       } else {

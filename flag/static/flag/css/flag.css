@@ -1,8 +1,33 @@
 .m-2 {
     margin: 0.5rem!important;
 }
+.mt-2 {
+    margin-top: 0.5rem !important;
+}
 .p1 {
     margin: 0.25rem!important;
+}
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
 }
 .flag-report-icon {
     float: right;
@@ -73,9 +98,21 @@
 }
 .report-modal-flag-form form {
     font-size: 1rem;
+    line-height: 2;
 }
 .report-modal-flag-form form label {
     padding: 5px 10px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+.report-modal-flag-form form input {
+    overflow: visible;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+.report-modal-flag-form form table {
+    border-collapse: collapse;
 }
 .report-modal-form-info {
     padding: 0.1rem 1rem;
@@ -87,4 +124,33 @@
 }
 .user-has-not-flagged {
     fill: none;
+}
+.flag-submit-btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    color: #fff;
+    background-color: #E74C3C;
+    border-color: #E74C3C;
+    -webkit-appearance: button;
+}
+.flag-modal-title {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin-bottom: .5rem;
+    font-size: 1.5rem;
+    line-height: inherit;
+    color: inherit;
+    white-space: normal;
 }
