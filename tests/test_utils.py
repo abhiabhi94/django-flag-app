@@ -3,17 +3,17 @@ from unittest.mock import patch
 from django.contrib.contenttypes.models import ContentType
 
 from flag.utils import get_content_type, get_model_object, process_flagging_request, get_user_for_model
-from tests.base import BaseFlagUtilsTest, Post
+from tests.base import BaseFlagTest, Post
 
 
-class TestGetContentType(BaseFlagUtilsTest):
+class TestGetContentType(BaseFlagTest):
     def test_success(self):
         post = self.post_1
         response = get_content_type(post)
         self.assertEqual(response, ContentType.objects.get_for_model(post.__class__))
 
 
-class TestGetModelObject(BaseFlagUtilsTest):
+class TestGetModelObject(BaseFlagTest):
     def test_success(self):
         data = self.data.copy()
         data.pop('info')
@@ -23,7 +23,7 @@ class TestGetModelObject(BaseFlagUtilsTest):
         self.assertEqual(response, post)
 
 
-class TestGetUserForModel(BaseFlagUtilsTest):
+class TestGetUserForModel(BaseFlagTest):
     def test_when_user_field_is_associated(self):
         response = get_user_for_model(self.post_1)
         self.assertEqual(response, self.post_1.user)
@@ -35,7 +35,7 @@ class TestGetUserForModel(BaseFlagUtilsTest):
         self.assertEqual(response, None)
 
 
-class TestProcessFlaggingRequest(BaseFlagUtilsTest):
+class TestProcessFlaggingRequest(BaseFlagTest):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()

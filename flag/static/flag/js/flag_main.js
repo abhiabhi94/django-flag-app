@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
+  let headers = {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/x-www-form-urlencoded'
+  };
+
   const fadeOut = function (element, duration) {
     let interval = 10;//ms
     let opacity = 1.0;
@@ -93,7 +98,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const removeFlag = function (e) {
     submitFlagForm(e.currentTarget, 'remove');
-  }
+  };
+
+  const convertDataToURLQuery = function (data) {
+    return Object.keys(data).map(function (key) {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+    }).join('&');
+  };
 
   const submitFlagForm = function (ele, action = 'add') {
     let flagEle, info = null, reason = null;
@@ -114,41 +125,39 @@ document.addEventListener('DOMContentLoaded', function () {
       'app_name': appName,
       'model_name': modelName,
       'model_id': modelId,
-      'reason': reason,
-      'info': info
     };
-    const request = new XMLHttpRequest();
-    request.open('post', url, true);
-    request.responseType = 'json';
-    request.setRequestHeader('x-requested-with', 'XMLHttpRequest');
-    request.setRequestHeader('x-csrftoken', csrf);
-    request.setRequestHeader('content-type', 'x-www-form-urlencoded');
-    request.onreadystatechange = function () {
-      if (request.status == 200) {
-        const addClass = 'user-has-flagged';
-        const removeClass = 'user-has-not-flagged';
-        const flagIcon = flagEle.querySelector('.flag-icon');
-        const response = this.response;
-        if (response) {
-          createInfoElement(flagEle.parentElement, response.status, response.msg);
-          const modal = flagEle.nextElementSibling;
-          if (response.flag === 1) {
-            toggleClass(flagIcon, addClass, removeClass, action = 'add');
-            hideModal(modal);
-            flagEle.removeEventListener('click', showModal);
-            flagEle.addEventListener('click', removeFlag);
-          } else {
-            toggleClass(flagIcon, addClass, removeClass, action = 'remove');
-            flagEle.removeEventListener('click', removeFlag);
-            flagEle.addEventListener('click', showModal);
-            prepareFlagModal(flagEle);
-          };
+    if (reason) { data['reason'] = reason; };
+    if (info) { data['info'] = info; };
+    const query = convertDataToURLQuery(data);
+    headers['X-CSRFToken'] = csrf;
+    fetch(url, {
+      'method': 'post',
+      'headers': headers,
+      'body': query,
+    }).then(function (response) {
+      return response.json();
+    }).then(function (response) {
+      const addClass = 'user-has-flagged';
+      const removeClass = 'user-has-not-flagged';
+      const flagIcon = flagEle.querySelector('.flag-icon');
+      if (response) {
+        createInfoElement(flagEle.parentElement, response.status, response.msg);
+        const modal = flagEle.nextElementSibling;
+        if (response.flag === 1) {
+          toggleClass(flagIcon, addClass, removeClass, action = 'add');
+          hideModal(modal);
+          flagEle.removeEventListener('click', showModal);
+          flagEle.addEventListener('click', removeFlag);
+        } else {
+          toggleClass(flagIcon, addClass, removeClass, action = 'remove');
+          flagEle.removeEventListener('click', removeFlag);
+          flagEle.addEventListener('click', showModal);
+          prepareFlagModal(flagEle);
         };
-      } else {
-        console.log(response);
       };
-    };
-    request.send(JSON.stringify(data));
+    }).catch(function (error) {
+      alert('The flagging request could not be processed. Please try again.')
+    });
   };
 
   const prepareFlagModal = function (flagEle, parent = null) {

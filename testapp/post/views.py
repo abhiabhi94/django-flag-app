@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 
-from .models import Post
-from .forms import PostForm
+from testapp.post.models import Post
+from testapp.post.forms import PostForm
 
 
 class PostListView(ListView):
@@ -23,7 +23,7 @@ def createpost_view(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user  # save the user who created the post
+            post.user = request.user  # save the user who created the post
             post.save()
             return redirect(post.get_absolute_url())
     else:

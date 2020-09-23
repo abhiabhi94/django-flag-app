@@ -1,9 +1,9 @@
 from rest_framework import status
 
-from tests.base import BaseFlagUtilsTest, Flag, FlagInstance
+from tests.base import BaseFlagAPITest, Flag, FlagInstance
 
 
-class FlagAPIViewsTest(BaseFlagUtilsTest):
+class FlagAPIViewsTest(BaseFlagAPITest):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -13,11 +13,31 @@ class FlagAPIViewsTest(BaseFlagUtilsTest):
         super().setUp()
         self.url = '/api/flag/'
 
-    def test_flagging_successfully(self):
+    def test_flagging_successfully_with_url_encoded_form(self):
         data = self.data.copy()
         post = self.post
         data['model_id'] = post.id
         response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response.json()['detail'],
+            'The content has been flagged successfully. A moderator will review it shortly.'
+        )
+
+        # check database
+        flag = Flag.objects.get_flag(post)
+        __, created = FlagInstance.objects.get_or_create(
+                flag=flag,
+                user=response.wsgi_request.user,
+                reason=data['reason']
+                )
+        self.assertEqual(created, False)
+
+    def test_flagging_successfully_with_json_format(self):
+        data = self.data.copy()
+        post = self.post
+        data['model_id'] = post.id
+        response = self.client.post(self.url, data=data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(

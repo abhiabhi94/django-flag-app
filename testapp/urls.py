@@ -10,7 +10,7 @@ urlpatterns = [
     path('flag/', include('flag.urls')),
     # API urls
     path('api/', include('testapp.post.api.urls')),
-    path('api/', include('testapp.post.api.urls')),
+    path('api/', include('testapp.user_profile.api.urls')),
     path('api/', include('flag.api.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('', include('testapp.post.urls')),

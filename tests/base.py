@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import reverse
 from django.test import Client, RequestFactory, TestCase
+from rest_framework.test import APITestCase
 
 from flag.models import Flag, FlagInstance
 from testapp.post.models import Post
@@ -11,7 +12,7 @@ from testapp.post.models import Post
 User = get_user_model()
 
 
-class BaseFlagTest(TestCase):
+class BaseFlagTestUtils:
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -44,6 +45,13 @@ class BaseFlagTest(TestCase):
         super().setUp()
         self.client.force_login(self.user_1)
         self.url = reverse('flag:flag')
+        self.data = {
+            'app_name': 'post',
+            'model_name': 'Post',
+            'model_id': self.post_1.id,
+            'reason': FlagInstance.reason_values[0],
+            'info': ''
+        }
 
     @classmethod
     def create_post(cls):
@@ -86,6 +94,10 @@ class BaseFlagTest(TestCase):
         )
 
 
+class BaseFlagTest(BaseFlagTestUtils, TestCase):
+    pass
+
+
 class BaseFlagModelTest(BaseFlagTest):
     @classmethod
     def setUpTestData(cls):
@@ -98,13 +110,6 @@ class BaseFlagViewTest(BaseFlagTest):
         super().setUp()
         self.client = Client(HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.client.force_login(self.user_1)
-        self.data = {
-            'app_name': 'post',
-            'model_name': 'Post',
-            'model_id': self.post_1.id,
-            'reason': FlagInstance.reason_values[0],
-            'info': ''
-        }
 
     @classmethod
     def setUpTestData(cls):
@@ -133,13 +138,5 @@ class BaseFlagMixinsTest(BaseFlagTest):
         self.factory = RequestFactory()
 
 
-class BaseFlagUtilsTest(BaseFlagMixinsTest):
-    def setUp(self):
-        super().setUp()
-        self.data = {
-            'app_name': 'post',
-            'model_name': 'Post',
-            'model_id': self.post_1.id,
-            'reason': FlagInstance.reason_values[0],
-            'info': ''
-        }
+class BaseFlagAPITest(BaseFlagTestUtils, APITestCase):
+    pass

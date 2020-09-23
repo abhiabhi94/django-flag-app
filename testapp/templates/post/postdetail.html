@@ -10,13 +10,13 @@
             <div class="js-author-card card mb-5 px-lg-4">
                 <div class="card-body">
                     <div class="d-none d-sm-inline-block" style="max-width: 120px;">
-                        <img class="w-100 mb-4 align-baseline rounded-circle" src="{{post.author.userprofile.image.url}}" alt="" >
+                        <img class="w-100 mb-4 align-baseline rounded-circle" src="{{post.user.userprofile.image.url}}" alt="" >
                     </div>
                     <div class="d-inline-block ml-4">
                         <h6>Author:
                             <span class="h5">
                                 <a class="nounderline text-capitalize badge badge-light" href="{% url 'profile:profile' username=post.user.username %}">
-                                    <strong>{{ post.author.username }}</strong>
+                                    <strong>{{ post.user.username }}</strong>
                                 </a>
                             </span>
                         </h6>

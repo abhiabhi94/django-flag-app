@@ -7,9 +7,11 @@ from flag.utils import process_flagging_request
 
 
 class SetFlag(ContentTypeMixin, APIView):
+    api = True
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
+        self.validate(request)
         response = process_flagging_request(user=request.user, model_obj=self.model_obj, data=self.data)
         detail = {'detail': response['msg']}
 

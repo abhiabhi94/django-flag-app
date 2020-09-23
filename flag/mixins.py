@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from django.contrib.contenttypes.models import ContentType
+from django.http import QueryDict
 from django.http.response import JsonResponse
 from django.utils.translation import gettext_lazy as _
 
@@ -13,10 +14,16 @@ class BaseMixin:
     error = None
 
     def dispatch(self, request, *args, **kwargs):
-        try:
-            self.validate(request)
-        except FlagBadRequest as exc:
-            return JsonResponse({'type': _('error'), 'detail': _(exc.detail)}, status=400)
+        """
+            Set `api=True` for rest framework.
+            let rest framework handle the exception to choose the right renderer.
+            validate method **should** be called in the derived API class.
+        """
+        if not self.api:
+            try:
+                self.validate(request)
+            except FlagBadRequest as exc:
+                return JsonResponse({'type': _('error'), 'detail': _(exc.detail)}, status=400)
         return super().dispatch(request, *args, **kwargs)
 
     @abstractmethod
@@ -31,14 +38,22 @@ class ContentTypeMixin(BaseMixin):
     model_obj = None
     data = None
 
-    def validate_data(self, request):
-        data = request.POST
+    def _get_data_for_request(self, request):
+        if self.api:
+            data = request.POST or request.data
+        else:
+            data = request.POST
 
+        if isinstance(data, QueryDict):
+            return data.dict()
+        return data
+
+    def validate_data(self, request):
+        data = self._get_data_for_request(request)
         if not data:
             self.error = 'no data passed'
             self.raise_error()
-
-        return data.dict()
+        return data
 
     def validate_app_name(self, app_name):
         if not app_name:
@@ -65,7 +80,7 @@ class ContentTypeMixin(BaseMixin):
         try:
             model_id = int(model_id)
         except ValueError:
-            self.error = f'model id must be an integer, {model_id} is NOT'
+            self.error = f'model id must be an integer, "{model_id}" is NOT'
             self.raise_error()
 
         return model_id
@@ -74,7 +89,7 @@ class ContentTypeMixin(BaseMixin):
         try:
             ct_object = ContentType.objects.get(model=model_name.lower(), app_label=app_name)
         except ContentType.DoesNotExist:
-            self.error = f'{model_name} is NOT a valid model name'
+            self.error = f'"{model_name}" is NOT a valid model name'
             self.raise_error()
 
         return ct_object
@@ -84,7 +99,7 @@ class ContentTypeMixin(BaseMixin):
         model_class = ct_object.model_class()
         model_query = model_class.objects.filter(id=model_id)
         if not model_query.exists() and model_query.count() != 1:
-            self.error = f'{model_id} is NOT a valid model id for the model {model_name}'
+            self.error = f'"{model_id}" is NOT a valid model id for the model "{model_name}"'
             self.raise_error()
         return model_query.first()
 

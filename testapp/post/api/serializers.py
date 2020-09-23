@@ -4,7 +4,7 @@ from testapp.post.models import Post
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
-    author = serializers.HyperlinkedRelatedField(
+    user = serializers.HyperlinkedRelatedField(
         view_name='user-detail',
         read_only=True,
         lookup_field='username',
@@ -21,7 +21,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             'body',
             'date',
             'editdate',
-            'author',
+            'user',
         )
 
     @staticmethod

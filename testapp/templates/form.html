@@ -1,3 +1,4 @@
+{% load post_tags %}
 {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
 {% endfor %}
@@ -18,23 +19,17 @@
 
         {% if form.is_bound %}
             {% if field.errors %}
-                {% if field.label == 'Tag' %}
-                    {% include 'tag/tag.html' %}
-                {% endif %}
+                {% render_field field class="form-control form-control-sm is-invalid" %}
                 {% for error in field.errors %}
-                  <div class="invalid-feedback">
+                    <div class="invalid-feedback">
                     {{ error }}
-                  </div>
+                    </div>
                 {% endfor %}
             {% else %}
-                {% if field.label == 'Tag' %}
-                    {% include 'tag/tag.html' %}
-                {% endif %}
+                {% render_field field class="form-control form-control-sm is-valid" %}
             {% endif %}
         {% else %}
-            {% if field.label == 'Tag' %}
-                {% include 'tag/tag.html' %}
-            {% endif %}
+            {% render_field field class="form-control form-control-sm" %}
         {% endif %}
         {% if field.help_text %}
             <small class="form-text text-muted">{{ field.help_text | safe }}</small>

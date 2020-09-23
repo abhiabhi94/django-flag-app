@@ -5,10 +5,6 @@ body {
     padding: 0.25rem 0.1rem !important;
     font-size: 0.80rem !important;
 }
-label {
-    font-size: 14px !important;
-    font-weight: 700;
-}
 ul {
     list-style-type: none !important;
 }

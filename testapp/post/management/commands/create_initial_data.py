@@ -27,9 +27,13 @@ def generate_initial_data():
         moderator_group, _ = Group.objects.get_or_create(name='flag_moderator')
         moderator_group.user_set.add(moderator)
 
-    normal_user, _ = get_or_create('test', password='test')
+    user, _ = get_or_create('test', password='test')
+    admin_user, created_super_user = get_or_create('admin', password='admin')
+    if created_super_user:
+        admin_user.is_staff = True
+        admin_user.save()
 
     try:
         Post.objects.get(title='Test Post')
     except Post.DoesNotExist:
-        Post.objects.create(title='Test Post', body='Hello django flag app', user=normal_user)
+        Post.objects.create(title='Test Post', body='Hello django flag app', user=user)

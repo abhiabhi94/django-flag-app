@@ -56,11 +56,11 @@ px-0
                                             {% endfor %}
                                         </div>
                                         <div class="mx-0">
-                                            <form class="d-inline" action="{% url 'post:postdetail' slug=post.slug %}">
+                                            <a class="d-inline" href="{% url 'post:postdetail' slug=post.slug %}">
                                                 <button class="btn btn-outline-success btn-sm h6" type="submit">
                                                     Read More
                                                 </button>
-                                            </form>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

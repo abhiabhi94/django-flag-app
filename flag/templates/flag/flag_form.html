@@ -1,4 +1,8 @@
 {% load i18n %}
+{% load static %}
+<link rel="stylesheet"
+  type="text/css"
+  href="{% static 'flag/css/flag_style.css' %}"/>
 <div class="report-modal-form-combined">
   <div class="flag-report-icon"
     data-url="{% url 'flag:flag' %}"
@@ -60,3 +64,6 @@
     </div>
   </div>
 </div>
+<script
+  type="text/javascript"
+  src="{% static 'flag/js/flag_main.js' %}"></script>
