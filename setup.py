@@ -1,14 +1,18 @@
+import os
 import setuptools
 
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 def get_description():
-    with open('README.md', 'r') as fh:
+    with open(os.path.join(BASE_DIR, 'README.rst')) as fh:
         description = fh.read().strip()
     return description
 
 
 def get_version():
-    with open('VERSION', 'r') as version_file:
+    with open(os.path.join(BASE_DIR, 'VERSION')) as version_file:
         version = version_file.read().strip()
     return version
 
