@@ -1,0 +1,9 @@
+recursive-include flag  *.py
+recursive-include flag/static *
+recursive-include flag/templates *
+recursive-include docs *
+include LICENSE
+include README.rst
+include VERSION
+include tox.ini manage.py
+recursive-include tests *.py

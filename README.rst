@@ -121,7 +121,7 @@ Use template tag
 
 If you want to use web API, this step is not required. See further instructions at `Web API`_.
 
-:: _Web API: ./docs/webAPI.rst
+.. _Web API: ./docs/webAPI.rst
 
 ``render_flag_form`` tag requires 2 required positional arguments:
 
