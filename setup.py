@@ -22,7 +22,7 @@ setuptools.setup(
     version=get_version(),
     author='Abhyudai',
     author_email='',
-    description='A pluggable django application to add flagging to your models.',
+    description='A pluggable django application that adds the ability for users to flag(or report) your models',
     long_description=get_description(),
     long_description_content_type='text/markdown',
     url='https://github.com/abhiabhi94/django-flag-app',

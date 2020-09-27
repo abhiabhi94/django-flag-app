@@ -1,4 +1,3 @@
-===============
 django-flag-app
 ===============
 
@@ -28,13 +27,8 @@ django-flag-app
 
 A pluggable django application that adds the ability for users to flag(or report) your models.
 
-.. image:: ./docs/_static/images/django-flag-app.gif
+.. image:: ./_static/images/django-flag-app.gif
     :alt: flagging-process
-
-For complete documentation you may visit `Read the Doc`_. or see the `docs`_ directory.
-
-.. _Read the Doc: https://django-flag-app.readthedocs.io
-.. _docs: ./docs/
 
 Installation
 ------------
@@ -89,7 +83,7 @@ Migrate
 
 Run the migrations to add the new models to your database:
 
-.. code:: python
+.. code:: sh
 
     python manage.py migrate flag
 
@@ -119,9 +113,7 @@ E.g. for a ``Post`` model, you may add the field as shown below:
 Use template tag
 `````````````````
 
-If you want to use web API, this step is not required. See further instructions at `Web API`_.
-
-:: _Web API: ./docs/webAPI.rst
+If you want to use web API, this step is not required. See further instructions at :ref:`API Actions`.
 
 ``render_flag_form`` tag requires 2 required positional arguments:
 
@@ -135,10 +127,7 @@ To render the ``flag`` form for a the instance ``post``, place this inside your 
     {% render_flag_form post user %}
 
 
-
 Contributing
 ------------
 
-Please see the instructions at `Contributing`_.
-
-.. _Contributing: ./CONTRIBUTING.rst
+Please see the instructions at :ref:`Contributing to Django Flag App`.

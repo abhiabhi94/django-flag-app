@@ -63,7 +63,7 @@ class TestSetFlag(BaseFlagViewTest):
         self.assertDictEqual(response.json(), response_data)
 
     def test_unflagging_successfully(self):
-        # un-flag => no reason is passed and the comment must be already flagged by the user
+        # un-flag => no reason is passed and the content must be already flagged by the user
         post = self.post
         self.set_flag(model_obj=post)
         data = self.data.copy()
