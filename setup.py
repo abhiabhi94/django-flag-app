@@ -24,8 +24,11 @@ setuptools.setup(
     author_email='',
     description='A pluggable django application that adds the ability for users to flag(or report) your models',
     long_description=get_description(),
-    long_description_content_type='text/markdown',
     url='https://github.com/abhiabhi94/django-flag-app',
+    project_urls={
+        'Documentation': 'https://django-flag-app.readthedocs.io',
+        'Source Code': 'https://github.com/abhiabhi94/django-flag-app',
+    },
     packages=setuptools.find_packages(exclude=['docs', 'test*']),
     include_package_data=True,
     classifiers=[
