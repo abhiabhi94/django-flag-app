@@ -2,7 +2,6 @@ dist: bionic
 os: linux
 language: python
 cache: pip
-
 python:
   - 3.6
   - 3.7
@@ -16,6 +15,13 @@ env:
 
 install: pip install tox-travis coveralls
 script:
-  - tox
+- tox
 after_success: coveralls
 
+deploy:
+  provider: pypi
+  username: "__token__"
+  password:
+    secure: u9OkdMaFzq/IE+ioARENz57DGYAOAQer4qpvdfAnL4KNR91Dw6E61V8m/BX3R6rnKldMoXMpzSXWQLmEqcnU5x00uO2P2f///gSbCp79KZzXhc7SmTYMiDfgeQ8t4GPx3YK6gPluG4Js46DDBhlTW6wDht0vg9I5KfzrcbGLQ5PHGT+S5YXBDRd32YxTbFDHo0/rgJbslWbPTCTuRlOLhXh0TYnoS3IYguDzEMB2Vnq4eW0I1npQlrZtzVCYh9kgRCmaalEgZ9P7X013U649OUXisb5V3pRdEa9+jfGNK14tLEuiIZjqr4lLKmoCq/wlT5sPFG1M29B0JmP22fAO7cQSxJq2Kl+P3o3QHEZ+PJqN9bgi+Yn+HDabyWel731gCA2UPaeS2qoppSJrxfAOIwgtPoQs7XP2+ml803A4F3P9EF6odery4GFR57kll5aJGlGC9dxHKGY0NO77vtPKZQscW90DiFXRmNEtFCvkarOJLvVCiNHiJww3TxkzBS+eRTkTTN0rRRT6nNMlfSlSTVX83ggDboCFHMMarOzeOQRq1V6n1RheME6P+u31bNSq0Swh+I95MvvFJdmu4dlSCc/pAQ5pOZ9HZmLc0cwkNaaQ8m1ZkhqhFDySvlXhTKslANnxCaXuRRTAWso+1tfSpY9LmYHW00kgRX647C1yYhA=
+  on:
+    tags: true
