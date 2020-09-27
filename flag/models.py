@@ -82,7 +82,7 @@ class Flag(models.Model):
         self.save()
 
     def toggle_flagged_state(self):
-        allowed_flags = getattr(settings, 'FLAGS_ALLOWED', 0)
+        allowed_flags = getattr(settings, 'FLAGS_ALLOWED', 10)
         self.refresh_from_db()
         field = 'state'
         if self.count > allowed_flags and (
