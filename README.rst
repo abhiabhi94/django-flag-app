@@ -26,15 +26,18 @@ django-flag-app
     :target: https://github.com/abhiabhi94/django-flag-app/blob/master/LICENSE
     :alt: licence
 
+
 A pluggable django application that adds the ability for users to flag(or report) your models.
 
-.. image:: ./docs/_static/images/django-flag-app.gif
+
+.. image:: https://github.com/abhiabhi94/django-flag-app/tree/master/docs/_static/images/django-flag-app.gif
     :alt: flagging-process
+
 
 For complete documentation you may visit `Read the Doc`_. or see the `docs`_ directory.
 
 .. _Read the Doc: https://django-flag-app.readthedocs.io
-.. _docs: ./docs/
+.. _docs: https://github.com/abhiabhi94/django-flag-app/tree/master/docs/
 
 Installation
 ------------
@@ -121,7 +124,7 @@ Use template tag
 
 If you want to use web API, this step is not required. See further instructions at `Web API`_.
 
-.. _Web API: ./docs/webAPI.rst
+.. _Web API: https://github.com/abhiabhi94/django-flag-app/tree/master/docs/webAPI.rst
 
 ``render_flag_form`` tag requires 2 required positional arguments:
 
@@ -141,4 +144,4 @@ Contributing
 
 Please see the instructions at `Contributing`_.
 
-.. _Contributing: ./CONTRIBUTING.rst
+.. _Contributing: https://github.com/abhiabhi94/django-flag-app/tree/master/CONTRIBUTING.rst
