@@ -44,6 +44,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
+  const toggleTitle = function (element, action) {
+    const spanEle = element.querySelector('span');
+    if (action == 'add') {
+      spanEle.title = 'Remove flag';
+    } else {
+      spanEle.title = 'Report content';
+    }
+  };
+
   const createInfoElement = function (responseEle, status, msg, duration = 2) {
     switch (status) {
       case -1:
@@ -144,20 +153,23 @@ document.addEventListener('DOMContentLoaded', function () {
       if (response) {
         createInfoElement(flagEle.parentElement, response.status, response.msg);
         const modal = flagEle.nextElementSibling;
+        let action;
         if (response.flag === 1) {
-          toggleClass(flagIcon, addClass, removeClass, action = 'add');
+          action = 'add';
           hideModal(modal);
           flagEle.removeEventListener('click', showModal);
           flagEle.addEventListener('click', removeFlag);
         } else {
-          toggleClass(flagIcon, addClass, removeClass, action = 'remove');
+          action = 'remove';
           flagEle.removeEventListener('click', removeFlag);
           flagEle.addEventListener('click', showModal);
           prepareFlagModal(flagEle);
-        };
-      };
+        }
+        toggleClass(flagIcon, addClass, removeClass, action);
+        toggleTitle(flagEle, action);
+      }
     }).catch(function (error) {
-      alert('The flagging request could not be processed. Please try again.')
+      alert('The flagging request could not be processed. Please try again.');
     });
   };
 
