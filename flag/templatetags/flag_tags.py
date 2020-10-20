@@ -1,4 +1,7 @@
 from django import template
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import gettext_lazy as _
 
 from flag.models import FlagInstance
 
@@ -20,6 +23,16 @@ def has_flagged(user, obj):
     return False
 
 
+@register.simple_tag(name='get_login_url')
+def get_login_url():
+    login_url = getattr(settings, 'LOGIN_URL', None)
+    if not login_url:
+        raise ImproperlyConfigured(_('Django Flag App: LOGIN_URL is not defined in the settings'))
+    if not login_url.endswith('/'):
+        login_url += '/'
+    return login_url
+
+
 @register.inclusion_tag('flag/flag_form.html')
 def render_flag_form(obj, user):
     """
@@ -33,6 +46,7 @@ def render_flag_form(obj, user):
         'app_name': get_app_name(obj),
         'model_name': get_model_name(obj),
         'model_id': obj.id,
+        'user': user,
         'has_flagged': has_flagged(user, obj),
         'flag_reasons': FlagInstance.reasons
     }

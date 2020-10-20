@@ -1,8 +1,20 @@
 {% load i18n %}
 {% load static %}
-<link rel="stylesheet"
+{% load flag_tags %}
+<link
+  rel="stylesheet"
   type="text/css"
-  href="{% static 'flag/css/flag.css' %}"/>
+  href="{% static 'flag/css/flag.css' %}">
+{% if user.is_anonymous %}
+{% get_login_url as login_url %}
+<a
+  href="{{ login_url }}?next={{ request.build_absolute_uri }}"
+  class="{% block cls_flag_icon_unauthenticated %}{% endblock cls_flag_icon_unauthenticated %}">
+  <span title="{% trans 'Report content' %}">
+    {% include "flag/flag_icon.html" %}
+  </span>
+</a>
+{% else %}
 <div class="report-modal-form-combined {% block cls_flag %}{% endblock cls_flag %}">
   <div class="flag-report-icon {% block cls_flag_icon %}{% endblock cls_flag_icon %}"
     data-url="{% url 'flag:flag' %}"
@@ -12,9 +24,7 @@
     data-csrf="{{ csrf_token }}">
     <span
       title="{% if has_flagged %}{% trans "Remove flag" %}{% else %}{% trans "Report content" %}{% endif %}">
-        {% block flag_icon %}
         {% include "flag/flag_icon.html" %}
-        {% endblock flag_icon %}
     </span>
   </div>
   <div
@@ -63,3 +73,4 @@
 <script
   type="text/javascript"
   src="{% static 'flag/js/flag.js' %}"></script>
+{% endif %}
