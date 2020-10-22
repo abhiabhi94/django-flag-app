@@ -10,6 +10,7 @@ Welcome to Django Flag App's documentation!
    settings
    style-customisation
    contributing
+   changelog
 
 
 
