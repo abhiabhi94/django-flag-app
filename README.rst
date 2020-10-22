@@ -10,6 +10,10 @@ django-flag-app
     :target: https://coveralls.io/github/abhiabhi94/django-flag-app
     :alt: coverage
 
+.. image:: https://badge.fury.io/py/django-flag-app.svg
+    :target: https://pypi.org/project/django-flag-app/
+    :alt: Latest PyPi version
+
 .. image:: https://img.shields.io/pypi/pyversions/django-flag-app.svg
     :target: https://pypi.python.org/pypi/django-flag-app/
     :alt: python
