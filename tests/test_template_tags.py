@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
-from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
+from flag.conf import settings
 from flag.templatetags.flag_tags import get_app_name, get_model_name, has_flagged, render_flag_form, get_login_url
 from tests.base import BaseTemplateTagsTest, FlagInstance
 

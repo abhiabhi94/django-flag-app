@@ -1,8 +1,7 @@
 from unittest.mock import patch
 
-from django.conf import settings
-
 from flag.signals import adjust_flagged_content
+from flag.conf import settings
 from tests.base import BaseFlagModelTest, Flag, FlagInstance
 
 
@@ -35,7 +34,7 @@ class FlagSignalTest(BaseFlagModelTest):
         self.assertEqual(flag.count, 0)
         self.assertEqual(flag.state, Flag.State.UNFLAGGED.value)
 
-    @patch.object(settings, 'FLAGS_ALLOWED', 1)
+    @patch.object(settings, 'FLAG_ALLOWED', 1)
     def test_adjust_flagged_contents(self):
         post_1 = self.create_post()
         post_2 = self.create_post()

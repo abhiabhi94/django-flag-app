@@ -1,5 +1,4 @@
-from django.conf import settings
-
+from flag.conf import settings
 from tests.base import BaseFlagViewTest, Client, Flag, FlagInstance
 
 

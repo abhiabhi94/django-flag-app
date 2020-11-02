@@ -142,5 +142,6 @@ EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
 # flag app
-FLAGS_ALLOWED = 0
+FLAG_ALLOWED = 0

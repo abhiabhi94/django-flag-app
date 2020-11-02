@@ -1,7 +1,6 @@
 from collections import namedtuple
 from enum import IntEnum, unique
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -11,6 +10,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from flag.managers import FlagInstanceManager, FlagManager
+from flag.conf import settings
 
 User = get_user_model()
 
@@ -82,7 +82,7 @@ class Flag(models.Model):
         self.save()
 
     def toggle_flagged_state(self):
-        allowed_flags = getattr(settings, 'FLAGS_ALLOWED', 10)
+        allowed_flags = settings.FLAG_ALLOWED
         self.refresh_from_db()
         field = 'state'
         if self.count > allowed_flags and (
@@ -99,10 +99,7 @@ class Flag(models.Model):
 
 
 class FlagInstance(models.Model):
-    REASON = getattr(settings, "FLAG_REASONS", [
-        (1, _("Spam | Exists only to promote a service ")),
-        (2, _("Abusive | Intended at promoting hatred")),
-    ])
+    REASON = settings.FLAG_REASONS
 
     REASON.append((100, _('Something else')))
 
