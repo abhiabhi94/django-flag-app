@@ -1,8 +1,10 @@
+from unittest.mock import patch
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import reverse
-from django.test import Client, RequestFactory, TestCase, override_settings
+from django.test import Client, RequestFactory, TestCase
 from rest_framework.test import APITestCase
 
 from flag.models import Flag, FlagInstance
@@ -52,6 +54,7 @@ class BaseFlagTestUtils:
             'reason': FlagInstance.reason_values[0],
             'info': ''
         }
+        self.addCleanup(patch.stopall)
 
     @classmethod
     def create_post(cls):
@@ -94,7 +97,6 @@ class BaseFlagTestUtils:
         )
 
 
-@override_settings(FLAGS_ALLOWED=0)
 class BaseFlagTest(BaseFlagTestUtils, TestCase):
     pass
 
@@ -139,6 +141,5 @@ class BaseFlagMixinsTest(BaseFlagTest):
         self.factory = RequestFactory()
 
 
-@override_settings(FLAGS_ALLOWED=0)
 class BaseFlagAPITest(BaseFlagTestUtils, APITestCase):
     pass

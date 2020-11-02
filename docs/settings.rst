@@ -3,7 +3,7 @@ Settings
 
 django-flag-app has a few configuration options that allow you to customize it.
 
-FLAGS_ALLOWED
+FLAG_ALLOWED
 ``````````````
 The number of flags allowed before a content is set as flagged. Defaults to ``10``.
 

@@ -1,5 +1,8 @@
+from unittest.mock import patch
+
 from django.core.exceptions import ValidationError
 
+from flag.conf import settings
 from tests.base import BaseFlagModelTest, Flag, FlagInstance
 
 
@@ -62,18 +65,19 @@ class FlagModelTest(BaseFlagModelTest):
 
         self.assertEqual(self.flag.state, Flag.State.FLAGGED.value)
 
-        with self.settings(FLAGS_ALLOWED=1):
-            self.flag.count = 0
-            self.flag.save()
-            self.flag.increase_count()
-            self.flag.toggle_flagged_state()
+        # set FLAG_ALLOWED to 1
+        patch.object(settings, 'FLAG_ALLOWED', 1).start()
+        self.flag.count = 0
+        self.flag.save()
+        self.flag.increase_count()
+        self.flag.toggle_flagged_state()
 
-            self.assertEqual(self.flag.state, Flag.State.UNFLAGGED.value)
-            # flag once more to toggle the state
-            self.flag.increase_count()
-            self.flag.toggle_flagged_state()
+        self.assertEqual(self.flag.state, Flag.State.UNFLAGGED.value)
+        # flag once more to toggle the state
+        self.flag.increase_count()
+        self.flag.toggle_flagged_state()
 
-            self.assertEqual(self.flag.state, Flag.State.FLAGGED.value)
+        self.assertEqual(self.flag.state, Flag.State.FLAGGED.value)
 
 
 class FlagManagerTest(BaseFlagModelTest):
