@@ -69,6 +69,12 @@ class Flag(models.Model):
             raise err
         return state
 
+    def get_verbose_state(self, state):
+        state = self.get_clean_state(state)
+        for item in self.STATE_CHOICES:
+            if item[0] == state:
+                return item[1]
+
     def toggle_state(self, state, moderator):
         state = self.get_clean_state(state)
         # toggle states occurs between rejected and resolved states only

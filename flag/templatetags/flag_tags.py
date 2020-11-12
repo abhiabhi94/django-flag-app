@@ -2,7 +2,7 @@ from django import template
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 
-from flag.models import FlagInstance
+from flag.models import Flag, FlagInstance
 from flag.conf import settings
 
 register = template.Library()
@@ -18,7 +18,7 @@ def get_model_name(obj):
 
 def has_flagged(user, obj):
     if user.is_authenticated:
-        return FlagInstance.objects.has_flagged(user, obj)
+        return Flag.objects.has_flagged(user, obj)
 
     return False
 

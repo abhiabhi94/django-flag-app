@@ -13,8 +13,10 @@ class FlagManager(models.Manager):
         flag, __ = self.get_or_create(content_type=ctype, object_id=model_obj.id, creator=creator)
         return flag
 
+    def is_flagged(self, model_obj):
+        flag = self.get_flag(model_obj)
+        return flag.is_flagged
 
-class FlagInstanceManager(models.Manager):
     def has_flagged(self, user, model_obj):
         """
         Returns whether a model object has been flagged by a user or not
@@ -26,9 +28,11 @@ class FlagInstanceManager(models.Manager):
         Returns:
             bool
         """
-        ctype = get_content_type(model_obj)
-        return self.filter(flag__content_type=ctype, flag__object_id=model_obj.id, user=user).exists()
+        flag = self.get_flag(model_obj)
+        return flag.flags.filter(user=user).exists()
 
+
+class FlagInstanceManager(models.Manager):
     def _clean_reason(self, reason):
         err = ValidationError(
                 _('%(reason)s is an invalid reason'),
