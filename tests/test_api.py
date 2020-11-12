@@ -1,5 +1,6 @@
 from rest_framework import status
 
+from flag.api.serializers import FlagSerializer
 from tests.base import BaseFlagAPITest, Flag, FlagInstance
 
 
@@ -8,30 +9,38 @@ class FlagAPIViewsTest(BaseFlagAPITest):
     def setUpTestData(cls):
         super().setUpTestData()
         cls.post = cls.create_post()
+        cls.flag = Flag.objects.get_flag(cls.post)
 
     def setUp(self):
         super().setUp()
         self.url = '/api/flag/'
+        self.init_count = 0
+        self.context = {
+            'model_obj': self.post,
+            'user': self.user_1
+        }
 
     def test_flagging_successfully_with_url_encoded_form(self):
         data = self.data.copy()
         post = self.post
         data['model_id'] = post.id
+        self.flag.refresh_from_db()
+        init_count = self.flag.count
+
         response = self.client.post(self.url, data=data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(
-            response.json()['detail'],
-            'The content has been flagged successfully. A moderator will review it shortly.'
-        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.flag.refresh_from_db()
+        self.assertEqual(response.data, FlagSerializer(self.flag, context=self.context).data)
 
         # check database
-        flag = Flag.objects.get_flag(post)
         __, created = FlagInstance.objects.get_or_create(
-                flag=flag,
+                flag=self.flag,
                 user=response.wsgi_request.user,
                 reason=data['reason']
                 )
         self.assertEqual(created, False)
+        self.assertEqual(self.flag.count, init_count + 1)
 
     def test_flagging_successfully_with_json_format(self):
         data = self.data.copy()
@@ -39,20 +48,18 @@ class FlagAPIViewsTest(BaseFlagAPITest):
         data['model_id'] = post.id
         response = self.client.post(self.url, data=data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(
-            response.json()['detail'],
-            'The content has been flagged successfully. A moderator will review it shortly.'
-        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.flag.refresh_from_db()
+        self.assertEqual(response.data, FlagSerializer(self.flag, context=self.context).data)
 
         # check database
-        flag = Flag.objects.get_flag(post)
         __, created = FlagInstance.objects.get_or_create(
-                flag=flag,
+                flag=self.flag,
                 user=response.wsgi_request.user,
                 reason=data['reason']
                 )
         self.assertEqual(created, False)
+        self.assertEqual(self.flag.count, self.init_count + 1)
 
     def test_flagging_flagged_object(self):
         data = self.data.copy()
@@ -83,18 +90,24 @@ class FlagAPIViewsTest(BaseFlagAPITest):
     def test_unflagging_successfully(self):
         # un-flag => no reason is passed and the content must be already flagged by the user
         post = self.post
-        self.set_flag(model_obj=post)
+        self.flag.refresh_from_db()
+        init_count = self.flag.count
+        self.set_flag(post)
+        self.flag.refresh_from_db()
+        self.assertEqual(self.flag.count, init_count + 1)
+
         data = self.data.copy()
         data['model_id'] = post.id
         data.pop('reason')
         response = self.client.post(self.url, data=data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json()['detail'], 'The content has been unflagged successfully.')
+        self.flag.refresh_from_db()
+        self.assertEqual(response.data, FlagSerializer(self.flag, context=self.context).data)
         # check database
-        flag = Flag.objects.get_flag(post)
+        self.assertEqual(self.flag.count, init_count)
         __, created = FlagInstance.objects.get_or_create(
-                flag=flag,
+                flag=self.flag,
                 user=response.wsgi_request.user,
                 reason=FlagInstance.reason_values[0]
                 )
@@ -132,15 +145,18 @@ class FlagAPIViewsTest(BaseFlagAPITest):
         """Test response when last reason is passed with info"""
         data = self.data.copy()
         post = self.post_2
+        flag = Flag.objects.get_flag(post)
+        init_count = flag.count
         reason = FlagInstance.reason_values[-1]
         info = 'weird'
         data.update({'reason': reason, 'info': info, 'model_id': post.id})
         response = self.client.post(self.url, data=data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(
-            response.json()['detail'],
-            'The content has been flagged successfully. A moderator will review it shortly.'
-        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        flag.refresh_from_db()
+        context = self.context.copy()
+        context['model_obj'] = post
+        self.assertEqual(response.data, FlagSerializer(flag, context=context).data)
         # check database
-        flag = Flag.objects.get_flag(post)
         self.assertEqual(FlagInstance.objects.get(user=response.wsgi_request.user, flag=flag).info, info)
+        self.assertEqual(flag.count, init_count + 1)

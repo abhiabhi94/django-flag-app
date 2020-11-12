@@ -37,6 +37,29 @@ class FlagModelTest(BaseFlagModelTest):
         # None
         self.assertRaises(ValidationError, flag.get_clean_state, None)
 
+    def test_is_flagged(self):
+        post = self.post_1
+        flag = Flag.objects.get_flag(post)
+        flag.count = 0
+        flag.save()
+
+        self.assertEqual(False, flag.is_flagged)
+
+        self.set_flag(post)
+        flag.refresh_from_db()
+        self.assertEqual(True, flag.is_flagged)
+
+    @patch('flag.models.Flag.get_clean_state')
+    def test_get_verbose_state(self, mocked_get_clean_state):
+        flag = self.flag
+        state = flag.State.FLAGGED
+        mocked_get_clean_state.return_value = state
+
+        self.assertEqual(flag.get_verbose_state(state), flag.STATE_CHOICES[state-1][1])
+
+        mocked_get_clean_state.return_value = 100
+        self.assertIsNone(flag.get_verbose_state(100))
+
     def test_toggle_state(self):
         post = self.content_object_2
         flag = self.create_flag(post)
@@ -88,6 +111,26 @@ class FlagManagerTest(BaseFlagModelTest):
     def test_get_flag(self):
         self.assertEqual(Flag.objects.get_flag(self.post_2), self.flag)
 
+    def test_has_flagged(self):
+        user = self.user_2
+        post = self.post_2
+        self.assertEqual(Flag.objects.has_flagged(user, post), False)
+
+        self.set_flag(self.post_2, user=user)
+
+        self.assertEqual(Flag.objects.has_flagged(user, post), True)
+
+    def test_is_flagged(self):
+        post = self.post_1
+        flag = Flag.objects.get_flag(post)
+        flag.count = 0
+        flag.save()
+
+        self.assertEqual(False, Flag.objects.is_flagged(post))
+
+        self.flag.increase_count()
+        self.assertEqual(False, Flag.objects.is_flagged(post))
+
 
 class FlagInstanceModelTest(BaseFlagModelTest):
     def test_create_flag_instance(self):
@@ -101,16 +144,6 @@ class FlagInstanceModelTest(BaseFlagModelTest):
 
 
 class TestFlagInstanceManager(BaseFlagModelTest):
-
-    def test_has_flagged(self):
-        user = self.user_2
-        post = self.post_2
-        self.assertEqual(FlagInstance.objects.has_flagged(user, post), False)
-
-        self.set_flag(self.post_2, user=user)
-
-        self.assertEqual(FlagInstance.objects.has_flagged(user, post), True)
-
     def test_clean_when_last_reason_is_used(self):
         flag = self.flag
 
