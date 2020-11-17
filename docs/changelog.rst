@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.0
+-----
+
+- Fix API response.
+- Change parameter name to set amount of reports/flags to ``FLAG_ALLOWED``.
+
 0.1.1
 -----
 
