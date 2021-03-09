@@ -1,7 +1,6 @@
 from collections import namedtuple
 from enum import IntEnum, unique
 
-from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
@@ -12,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from flag.managers import FlagInstanceManager, FlagManager
 from flag.conf import settings
 
-User = get_user_model()
+User = settings.AUTH_USER_MODEL
 
 
 class Flag(models.Model):
