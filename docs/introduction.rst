@@ -1,7 +1,7 @@
 django-flag-app
 ===============
 
-.. image:: https://travis-ci.org/abhiabhi94/django-flag-app.svg?branch=master
+.. image:: https://travis-ci.org/abhiabhi94/django-flag-app.svg?branch=main
     :target: https://travis-ci.org/abhiabhi94/django-flag-app
     :alt: build
 
@@ -26,7 +26,7 @@ django-flag-app
     :alt: docs
 
 .. image:: https://img.shields.io/github/license/abhiabhi94/django-flag-app?color=gr
-    :target: https://github.com/abhiabhi94/django-flag-app/blob/master/LICENSE
+    :target: https://github.com/abhiabhi94/django-flag-app/blob/main/LICENSE
     :alt: licence
 
 A pluggable django application that adds the ability for users to flag(or report) your models.
