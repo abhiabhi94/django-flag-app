@@ -134,6 +134,8 @@ LOGIN_URL = '/profile/login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
+AUTH_USER_MODEL = 'user_profile.User'
+
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'user@domain')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'password')
