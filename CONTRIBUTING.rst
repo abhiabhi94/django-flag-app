@@ -17,8 +17,10 @@ To start development on this project, fork this repository and follow the follow
 
     # create a virtual environment
     $ python3 -m venv venv
-    # activate the virtual environment
-    $ source venv/bin/activate
+    # activate the virtual environment(unix users)
+    $ . venv/bin/activate
+    # activate the virtual environment(window users)
+    $ venv\Scripts\activate
     # install dependencies
     (venv) $ pip install -e . -r testapp/requirements.txt
     # migrate the migrations to the database

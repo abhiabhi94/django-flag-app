@@ -31,10 +31,10 @@ django-flag-app
     :alt: licence
 
 
-A pluggable django application that adds the ability for users to flag(or report) your models.
+A pluggable django application that adds the ability for users to flag(report or moderate) your models.
 
 
-.. image:: https://github.com/abhiabhi94/django-flag-app/blob/main/docs/_static/images/django-flag-app.gif
+.. image:: https://raw.githubusercontent.com/abhiabhi94/django-flag-app/main/docs/_static/images/django-flag-app.gif
     :alt: flagging-process
 
 
@@ -96,7 +96,7 @@ Migrate
 
 Run the migrations to add the new models to your database:
 
-.. code:: python
+.. code:: sh
 
     python manage.py migrate flag
 
@@ -104,7 +104,7 @@ Run the migrations to add the new models to your database:
 Connect the flag model with the target model
 `````````````````````````````````````````````
 
-In ``models.py`` add the field **flags** as a ``GenericRelation`` field to the required model.
+In ``models.py`` add the field ``flags`` as a ``GenericRelation`` field to the required model.
 
 E.g. for a ``Post`` model, you may add the field as shown below:
 
@@ -121,6 +121,11 @@ E.g. for a ``Post`` model, you may add the field as shown below:
         body = models.TextField()
         # the field name should be flags
         flags = GenericRelation(Flag)
+
+.. important::
+
+
+    the name of the field should be **flags**.
 
 
 Use template tag
@@ -146,6 +151,4 @@ To render the ``flag`` form for a the instance ``post``, place this inside your 
 Contributing
 ------------
 
-Please see the instructions at `Contributing`_.
-
-.. _Contributing: https://github.com/abhiabhi94/django-flag-app/blob/main/CONTRIBUTING.rst
+Please see the instructions at :ref:`Contributing to Django Flag App`.
