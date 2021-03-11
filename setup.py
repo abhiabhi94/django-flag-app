@@ -1,29 +1,30 @@
+import codecs
 import os
 import setuptools
-
+import importlib
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-def get_description():
-    with open(os.path.join(BASE_DIR, 'README.rst')) as fh:
-        description = fh.read().strip()
-    return description
+def get_version(rel_path):
+    return importlib.import_module('flag').__version__
 
 
-def get_version():
-    with open(os.path.join(BASE_DIR, 'VERSION')) as version_file:
-        version = version_file.read().strip()
-    return version
+def read(rel_path):
+    here = os.path.abspath(os.path.dirname(__file__))
+    # intentionally *not* adding an encoding option to open, See:
+    #   https://github.com/pypa/virtualenv/issues/201#issuecomment-3145690
+    with codecs.open(os.path.join(here, rel_path), 'r') as fp:
+        return fp.read()
 
 
 setuptools.setup(
     name='django-flag-app',
-    version=get_version(),
+    version=get_version('flag/__init__.py'),
     author='Abhyudai',
     author_email='',
     description='A pluggable django application that adds the ability for users to flag(or report) your models',
-    long_description=get_description(),
+    long_description=read('README.rst'),
     url='https://github.com/abhiabhi94/django-flag-app',
     project_urls={
         'Documentation': 'https://django-flag-app.readthedocs.io',

@@ -10,17 +10,16 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
-
-BASE_DIR = os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
+import importlib
 
 
-def get_version():
-    with open(os.path.join(BASE_DIR, 'VERSION')) as version_file:
-        version = version_file.read().strip()
-    return version
+def get_version_and_release():
+    __version__ = importlib.import_module('flag').__version__
+    # The short X.Y version.
+    version = '.'.join(__version__.split('.')[:2])
+    # The full version, including alpha/beta/rc tags.
+    release = __version__
+    return version, release
 
 
 # -- Project information -----------------------------------------------------
@@ -29,11 +28,7 @@ project = 'Django Flag App'
 copyright = '2020, Abhyudai'
 author = 'Abhyudai'
 
-# The short X.Y version
-version = get_version()
-# The full version, including alpha/beta/rc tags
-release = get_version()
-
+version, release = get_version_and_release()
 
 # -- General configuration ---------------------------------------------------
 
