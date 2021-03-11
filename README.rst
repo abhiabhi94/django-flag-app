@@ -151,4 +151,6 @@ To render the ``flag`` form for a the instance ``post``, place this inside your 
 Contributing
 ------------
 
-Please see the instructions at :ref:`Contributing to Django Flag App`.
+Please see the instructions at `Contributing.rst`_.
+
+.. _Contributing.rst: https://github.com/abhiabhi94/django-flag-app/blob/main/CONTRIBUTING.rst
