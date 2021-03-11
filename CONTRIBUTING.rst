@@ -38,7 +38,7 @@ To run tests against a particular ``python`` and ``django`` version installed in
 
 .. code:: sh
 
-    (venv) $ python manage.py test
+    (venv) $ pytest
 
 To run tests against all supported ``python`` and ``django`` versions, you may run:
 
