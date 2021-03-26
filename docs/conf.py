@@ -10,11 +10,16 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import importlib
+import sys
+import os.path
+
+# add flag to system path
+sys.path.insert(0, os.path.abspath('..'))
 
 
 def get_version_and_release():
-    __version__ = importlib.import_module('flag').__version__
+    import flag
+    __version__ = flag.__version__
     # The short X.Y version.
     version = '.'.join(__version__.split('.')[:2])
     # The full version, including alpha/beta/rc tags.
