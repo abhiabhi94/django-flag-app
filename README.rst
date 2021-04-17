@@ -2,13 +2,13 @@
 django-flag-app
 ===============
 
-.. image:: https://travis-ci.org/abhiabhi94/django-flag-app.svg?branch=main
-    :target: https://travis-ci.org/abhiabhi94/django-flag-app
-    :alt: build
+.. image:: https://github.com/abhiabhi94/django-flag-app/actions/workflows/test.yml/badge.svg?branch=main
+    :target: https://github.com/abhiabhi94/django-flag-app/actions
+    :alt: Test
 
-.. image:: https://coveralls.io/repos/github/abhiabhi94/django-flag-app/badge.svg
-    :target: https://coveralls.io/github/abhiabhi94/django-flag-app
-    :alt: coverage
+.. image:: https://codecov.io/gh/abhiabhi94/django-flag-app/branch/main/graph/badge.svg?token=1XFNVKMX4W
+  :target: https://codecov.io/gh/abhiabhi94/django-flag-app
+  :alt: Coverage
 
 .. image:: https://badge.fury.io/py/django-flag-app.svg
     :target: https://pypi.org/project/django-flag-app/
