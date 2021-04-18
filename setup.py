@@ -6,7 +6,7 @@ import importlib
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-def get_version(rel_path):
+def get_version():
     return importlib.import_module('flag').__version__
 
 
@@ -20,7 +20,7 @@ def read(rel_path):
 
 setuptools.setup(
     name='django-flag-app',
-    version=get_version('flag/__init__.py'),
+    version=get_version(),
     author='Abhyudai',
     author_email='',
     description='A pluggable django application that adds the ability for users to flag(or report) your models',
@@ -39,6 +39,7 @@ setuptools.setup(
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 3.0',
         'Framework :: Django :: 3.1',
+        'Framework :: Django :: 3.2',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
@@ -46,11 +47,12 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     python_requires='>=3.6',
     install_requires=['django'],
-    keywords='django flag report',
+    keywords='django flag report moderate',
     zip_safe=False,
 )

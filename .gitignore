@@ -9,6 +9,7 @@ docs/_build
 
 .tox
 .coverage
+coverage*
 
 # editor files
 .idea
