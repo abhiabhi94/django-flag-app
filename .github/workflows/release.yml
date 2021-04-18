@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+  environment: release
 
     steps:
       - uses: actions/checkout@v2
@@ -25,7 +26,6 @@ jobs:
           python setup.py sdist bdist_wheel
           twine check dist/*
       - name: Publish package to PyPI
-        environment: release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
         with:
