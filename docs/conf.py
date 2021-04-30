@@ -10,20 +10,25 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import sys
 import os.path
 
-# add flag to system path
-sys.path.insert(0, os.path.abspath('..'))
+
+PROJECT_ROOT = os.path.dirname(os.getcwd())
 
 
-def get_version_and_release():
-    import flag
-    __version__ = flag.__version__
+def _get_version_and_release():
+    with open(os.path.join(PROJECT_ROOT, 'setup.cfg'), 'r') as fp:
+        for line in fp:
+            if line.startswith('version = '):
+                version_line = line.strip()
+                break
+        else:
+            raise AssertionError('Version can not be determined')
+
     # The short X.Y version.
-    version = '.'.join(__version__.split('.')[:2])
+    _, version = version_line.split(' = ')
     # The full version, including alpha/beta/rc tags.
-    release = __version__
+    release = version
     return version, release
 
 
@@ -33,7 +38,7 @@ project = 'Django Flag App'
 copyright = '2020, Abhyudai'
 author = 'Abhyudai'
 
-version, release = get_version_and_release()
+version, release = _get_version_and_release()
 
 # -- General configuration ---------------------------------------------------
 
