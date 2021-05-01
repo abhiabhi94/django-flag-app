@@ -1,7 +1,5 @@
 #!/usr/bin/bash
 
-set -euxo pipefail
-
 echo "----------Releasing $(python setup.py --version) --------------"
 
 echo -e "\n------------- Upgrading dependecies ---------------------\n"
