@@ -1,7 +1,5 @@
-django
 djangorestframework
 flake8
-tox
 Pillow
 pytest-django
-pytest-cov
+coverage
