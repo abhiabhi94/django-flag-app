@@ -16,8 +16,8 @@ class FlagAdminTest(BaseFlagTest):
         return request
 
     @classmethod
-    def setUpTestData(cls):
-        super().setUpTestData()
+    def setUpClass(cls):
+        super().setUpClass()
         cls.model_admin = FlaggedContentAdmin(Flag, AdminSite())
 
     def setUp(self):
