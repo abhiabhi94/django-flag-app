@@ -1,16 +1,9 @@
 #!/usr/bin/bash
+set -e
 
-echo "----------Releasing $(python setup.py --version) --------------"
-
-echo -e "\n------------- Upgrading dependecies ---------------------\n"
+rm -rf dist build
 python -m pip install -U pip
-python -m pip install -U setuptools twine wheel
-
-echo -e "\n------------- Building Package -----------------------\n"
+python -m pip install -U setuptools wheel twine
 python setup.py sdist bdist_wheel
-
-echo -e "\n------------- Verifying Package ----------------------\n"
 twine check dist/*
-
-echo -e "\n------------- Publishing Package ----------------------\n"
-twine upload dist/*
+python -m twine upload dist/*
