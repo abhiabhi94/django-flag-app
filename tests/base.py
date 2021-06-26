@@ -29,7 +29,7 @@ class BaseFlagTestUtils:
             password='1234'
         )
         cls.moderator = User.objects.create_user(
-            username='moderator',
+            username='test-moderator',
             email='b@b.com',
             password='1234'
         )

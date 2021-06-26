@@ -23,10 +23,8 @@ To start development on this project, fork this repository and follow the follow
     $ venv\Scripts\activate
     # install dependencies
     (venv) $ pip install -e . Django -r testapp/requirements.txt
-    # migrate the migrations to the database
+    # migrate the migrations to the database and create some intial data
     (venv) $ python manage.py migrate
-    # create data
-    (venv) $ python manage.py create_initial_data
     # start the development server
     (venv) $ python manage.py runserver
 
