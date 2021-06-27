@@ -135,16 +135,17 @@ If you want to use web API, this step is not required. See further instructions 
 
 .. _Web API: https://github.com/abhiabhi94/django-flag-app/blob/main/docs/webAPI.rst
 
-``render_flag_form`` tag requires 2 required positional arguments:
+``render_flag_form`` tag requires 3 required positional arguments:
 
     1. Instance of the targeted model.
     2. User object.
+    3. Request object
 
 To render the ``flag`` form for a the instance ``post``, place this inside your detail view, perhaps in some template of the sort ``postdetail.html``.
 
 .. code:: jinja
 
-    {% render_flag_form post user %}
+    {% render_flag_form post user request %}
 
 
 

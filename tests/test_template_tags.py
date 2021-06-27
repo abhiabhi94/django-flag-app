@@ -43,7 +43,8 @@ class TestFlagTemplateTest(BaseTemplateTagsTest):
     def test_render_flag_form(self):
         post = self.post_1
         user = self.user_2
-        data = render_flag_form(post, user)
+        request = self.factory.get('/')
+        data = render_flag_form(post, user, request)
 
         self.assertEqual(data['app_name'], post._meta.app_label)
         self.assertEqual(data['model_name'], type(post).__name__)
@@ -51,10 +52,11 @@ class TestFlagTemplateTest(BaseTemplateTagsTest):
         self.assertEqual(data['user'], user)
         self.assertEqual(data['flag_reasons'], FlagInstance.reasons)
         self.assertEqual(data['has_flagged'], False)
+        self.assertEqual(data['request'], request)
 
         # flag the object
         self.set_flag(post, user)
-        data = render_flag_form(post, user)
+        data = render_flag_form(post, user, request)
 
         self.assertEqual(data['app_name'], post._meta.app_label)
         self.assertEqual(data['model_name'], type(post).__name__)
@@ -62,3 +64,16 @@ class TestFlagTemplateTest(BaseTemplateTagsTest):
         self.assertEqual(data['user'], user)
         self.assertEqual(data['flag_reasons'], FlagInstance.reasons)
         self.assertEqual(data['has_flagged'], True)
+        self.assertEqual(data['request'], request)
+
+    def test_render_flag_form_without_request_raises_warning(self):
+        post = self.post_1
+        user = self.user_2
+        with self.assertWarnsMessage(
+            DeprecationWarning,
+            (
+                'Flag App: The `request` argument is required by `render_flag_form` template tag to redirect links for '
+                'unauthenticated users. It will be made compulsory from v2.0.0.'
+            )
+        ):
+            render_flag_form(post, user)
