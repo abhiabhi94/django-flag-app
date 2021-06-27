@@ -1,3 +1,5 @@
+import warnings
+
 from django import template
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
@@ -34,19 +36,28 @@ def get_login_url():
 
 
 @register.inclusion_tag('flag/flag_form.html')
-def render_flag_form(obj, user):
+def render_flag_form(obj, user, request=None):
     """
     A template tag used for adding flag form in templates
 
     To render the flag form for a post model inside the app posts
 
-    Usage: `{% render_flag_form post user %}`
+    Usage: `{% render_flag_form post user request %}`
     """
+    if not request:
+        warnings.warn(
+            (
+                'Flag App: The `request` argument is required by `render_flag_form` template tag to redirect links '
+                'for unauthenticated users. It will be made compulsory from v2.0.0.'
+            ),
+            DeprecationWarning,
+        )
     return {
         'app_name': get_app_name(obj),
         'model_name': get_model_name(obj),
         'model_id': obj.id,
         'user': user,
         'has_flagged': has_flagged(user, obj),
-        'flag_reasons': FlagInstance.reasons
+        'flag_reasons': FlagInstance.reasons,
+        'request': request,
     }
