@@ -2,11 +2,11 @@ Changelog
 =========
 
 
-`v1.2.0 <https://github.com/abhiabhi94/django-flag-app/tree/HEAD>`__
-------------------------------------------------------------------------
+`v1.2.0 <https://github.com/abhiabhi94/django-flag-app/tree/v1.2.0>`__ (2021-06-19)
+-----------------------------------------------------------------------------------
 
 `Full
-Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.2.0...1.1.1>`__
+Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.1.1...v1.2.0>`__
 
 
 **Features**
@@ -17,11 +17,11 @@ Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.2.0...1.1.1>
 
 .. _`supported django versions`: https://www.djangoproject.com/download/#supported-versions
 
-`v1.1.1 <https://github.com/abhiabhi94/django-flag-app/tree/HEAD>`__
-------------------------------------------------------------------------
+`v1.1.1 <https://github.com/abhiabhi94/django-flag-app/tree/v1.1.1>`__ (2021-05-01)
+-----------------------------------------------------------------------------------
 
 `Full
-Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.1.0...HEAD>`__
+Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.1.0...v1.1.1>`__
 
 **Bug fixes**
 
