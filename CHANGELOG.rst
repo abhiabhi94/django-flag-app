@@ -1,6 +1,16 @@
 Changelog
 =========
 
+`v1.2.1 <https://github.com/abhiabhi94/django-flag-app/tree/v1.2.1>`__
+--------------------------------------------------------------------
+
+`Full
+Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.2.0...v1.2.1>`__
+
+**Bug Fixes**
+
+- Fix links for redirecting unauthenticated from flag form to login page.
+
 
 `v1.2.0 <https://github.com/abhiabhi94/django-flag-app/tree/v1.2.0>`__ (2021-06-19)
 -----------------------------------------------------------------------------------
