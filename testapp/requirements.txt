@@ -3,3 +3,5 @@ flake8
 Pillow
 pytest-django
 coverage
+# added to cater removal of pytz from django 4.0
+pytz
