@@ -1,5 +1,13 @@
 Changelog
 =========
+`v1.3.0 <https://github.com/abhiabhi94/django-flag-app/tree/v1.3.0>`__
+
+`Full
+Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.2.1...v1.3.0>`__
+
+**Features**
+
+- Confirm support for python ``3.10``.
 
 `v1.2.1 <https://github.com/abhiabhi94/django-flag-app/tree/v1.2.1>`__
 --------------------------------------------------------------------
