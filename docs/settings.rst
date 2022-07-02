@@ -22,4 +22,3 @@ The reasons for which a content can be flagged. Users will have a choose one of 
     ]
 
 Remember that ``(100, _('Something else')`` will always be appended to this list.
-

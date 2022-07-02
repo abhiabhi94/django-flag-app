@@ -53,5 +53,3 @@ To un-flag a **FLAGGED** content, set reason value to ``0`` or remove it from th
 .. code:: sh
 
     $ curl -X POST -u USERNAME:PASSWORD -H "Content-Type: application/json" -d "{'app_name': 'post','model_name': 'post', 'model_id': 1}" http://localhost:8000/api/flag/
-
-
