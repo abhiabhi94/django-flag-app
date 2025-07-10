@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
         flagInfo.required = true;
         flagInfo.style.display = "block";
       } else {
+        flagInfo.required = false;
         flagInfo.style.display = "none";
       };
     };
