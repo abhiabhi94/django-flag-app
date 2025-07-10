@@ -42,10 +42,11 @@
                 {% for reason in flag_reasons  %}
                   <input
                     type="radio"
-                    value={{ reason.value }}
+                    value="{{ reason.value }}"
+                    id="reason_{{ reason.value }}"
                     class="{% if forloop.last %}last-flag-reason{% endif %} {% block cls_flag_modal_reason %}flag-reason{% endblock cls_flag_modal_reason %}"
                     name="reason" required>
-                  <label for="{{ reason.reason }}">{{ reason.reason }}</label><br>
+                  <label for="reason_{{ reason.value }}">{{ reason.reason }}</label><br>
                 {% endfor %}
                 </tr>
                 <tr>
