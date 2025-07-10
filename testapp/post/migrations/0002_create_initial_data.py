@@ -21,7 +21,7 @@ def _generate_initial_data(apps, schema_editor):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            user = User.objects.create(username=username, password=password)
+            user = User.objects.create_user(username=username, password=password)
             created = True
         return user, created
 
