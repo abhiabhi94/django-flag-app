@@ -18,22 +18,10 @@ class BaseFlagTestUtils:
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        cls.user_1 = User.objects.create_user(
-                    username='test-1',
-                    email='a@a.com',
-                    password='1234'
-        )
-        cls.user_2 = User.objects.create_user(
-            username='test-2',
-            email='b@b.com',
-            password='1234'
-        )
-        cls.moderator = User.objects.create_user(
-            username='test-moderator',
-            email='b@b.com',
-            password='1234'
-        )
-        moderator_group = Group.objects.filter(name='flag_moderator').first()
+        cls.user_1 = User.objects.create_user(username="test-1", email="a@a.com", password="1234")
+        cls.user_2 = User.objects.create_user(username="test-2", email="b@b.com", password="1234")
+        cls.moderator = User.objects.create_user(username="test-moderator", email="b@b.com", password="1234")
+        moderator_group = Group.objects.filter(name="flag_moderator").first()
         moderator_group.user_set.add(cls.moderator)
         cls.posts = 0
         cls.post_1 = cls.create_post()
@@ -46,24 +34,20 @@ class BaseFlagTestUtils:
     def setUp(self):
         super().setUp()
         self.client.force_login(self.user_1)
-        self.url = reverse('flag:flag')
+        self.url = reverse("flag:flag")
         self.data = {
-            'app_name': 'post',
-            'model_name': 'Post',
-            'model_id': self.post_1.id,
-            'reason': FlagInstance.reason_values[0],
-            'info': ''
+            "app_name": "post",
+            "model_name": "Post",
+            "model_id": self.post_1.id,
+            "reason": FlagInstance.reason_values[0],
+            "info": "",
         }
         self.addCleanup(patch.stopall)
 
     @classmethod
     def create_post(cls):
         cls.posts += 1
-        return Post.objects.create(
-            user=cls.user_1,
-            title=f'post {cls.posts}',
-            body=f'post number {cls.posts} body'
-        )
+        return Post.objects.create(user=cls.user_1, title=f"post {cls.posts}", body=f"post number {cls.posts} body")
 
     @classmethod
     def increase_flag_count(cls):
@@ -89,12 +73,7 @@ class BaseFlagTestUtils:
             model_obj = cls.post_1
         flag_obj = Flag.objects.get_flag(model_obj)
         cls.increase_flag_count()
-        return FlagInstance.objects.create(
-            flag=flag_obj,
-            user=user,
-            reason=reason,
-            info=info
-        )
+        return FlagInstance.objects.create(flag=flag_obj, user=user, reason=reason, info=info)
 
 
 class BaseFlagTest(BaseFlagTestUtils, TestCase):
@@ -111,7 +90,7 @@ class BaseFlagModelTest(BaseFlagTest):
 class BaseFlagViewTest(BaseFlagTest):
     def setUp(self):
         super().setUp()
-        self.client = Client(HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.client = Client(HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.client.force_login(self.user_1)
 
     @classmethod
@@ -123,6 +102,7 @@ class BaseFlagViewTest(BaseFlagTest):
 class BaseTemplateTagsTest(BaseFlagTest):
     class MockUser:
         """Mock unauthenticated user for template. The User instance always returns True for `is_authenticated`"""
+
         is_authenticated = False
 
     def setUp(self):
@@ -133,11 +113,7 @@ class BaseTemplateTagsTest(BaseFlagTest):
 class BaseFlagMixinsTest(BaseFlagTest):
     def setUp(self):
         super().setUp()
-        self.data = {
-            'app_name': 'post',
-            'model_name': 'Post',
-            'model_id': self.post_1.id
-        }
+        self.data = {"app_name": "post", "model_name": "Post", "model_id": self.post_1.id}
         self.factory = RequestFactory()
 
 

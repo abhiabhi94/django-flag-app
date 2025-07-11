@@ -5,7 +5,7 @@ from flag.api import views
 
 
 urlpatterns = [
-    path('flag/', views.SetFlag.as_view(),  name='flag'),
+    path("flag/", views.SetFlag.as_view(), name="flag"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

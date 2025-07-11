@@ -1,4 +1,5 @@
 """Application wide exceptions"""
+
 try:
     from rest_framework.exceptions import APIException
 except ModuleNotFoundError:
@@ -7,7 +8,7 @@ except ModuleNotFoundError:
 
 class FlagBadRequest(APIException):
     status_code = 400
-    default_detail = 'Bad Request'
+    default_detail = "Bad Request"
 
     def __init__(self, detail=None, status_code=None):
         if status_code:

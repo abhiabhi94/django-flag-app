@@ -15,15 +15,15 @@ class BaseMixin:
 
     def dispatch(self, request, *args, **kwargs):
         """
-            Set `api=True` for rest framework.
-            let rest framework handle the exception to choose the right renderer.
-            validate method **should** be called in the derived API class.
+        Set `api=True` for rest framework.
+        let rest framework handle the exception to choose the right renderer.
+        validate method **should** be called in the derived API class.
         """
         if not self.api:
             try:
                 self.validate(request)
             except FlagBadRequest as exc:
-                return JsonResponse({'type': _('error'), 'detail': _(exc.detail)}, status=400)
+                return JsonResponse({"type": _("error"), "detail": _(exc.detail)}, status=400)
         return super().dispatch(request, *args, **kwargs)
 
     @abstractmethod
@@ -51,31 +51,31 @@ class ContentTypeMixin(BaseMixin):
     def validate_data(self, request):
         data = self._get_data_for_request(request)
         if not data:
-            self.error = 'no data passed'
+            self.error = "no data passed"
             self.raise_error()
         return data
 
     def validate_app_name(self, app_name):
         if not app_name:
-            self.error = 'app name is required'
+            self.error = "app name is required"
             self.raise_error()
 
         if not ContentType.objects.filter(app_label=app_name).exists():
-            self.error = f'{app_name} is not a valid app name'
+            self.error = f"{app_name} is not a valid app name"
             self.raise_error()
 
         return app_name
 
     def validate_model_name(self, model_name):
         if not model_name:
-            self.error = 'model name is required'
+            self.error = "model name is required"
             self.raise_error()
 
         return model_name
 
     def validate_model_id(self, model_id):
         if not model_id:
-            self.error = 'model id is required'
+            self.error = "model id is required"
             self.raise_error()
         try:
             model_id = int(model_id)
@@ -106,13 +106,13 @@ class ContentTypeMixin(BaseMixin):
     def validate(self, request, *args, **kwargs):
         super().validate(request, *args, **kwargs)
         data = self.validate_data(request)
-        app_name = data.get('app_name', None)
+        app_name = data.get("app_name", None)
         self.app_name = self.validate_app_name(app_name)
 
-        model_name = data.get('model_name', None)
+        model_name = data.get("model_name", None)
         self.model_name = self.validate_model_name(model_name)
 
-        model_id = data.get('model_id', None)
+        model_id = data.get("model_id", None)
         self.model_id = self.validate_model_id(model_id)
         self.model_obj = self.validate_model_object(self.app_name, self.model_name, self.model_id)
 
@@ -123,6 +123,6 @@ class ContentTypeMixin(BaseMixin):
 class AJAXMixin(BaseMixin):
     def validate(self, request, *args, **kwargs):
         super().validate(request, *args, **kwargs)
-        if not request.META.get('HTTP_X_REQUESTED_WITH', None) == 'XMLHttpRequest':
-            self.error = 'Only AJAX requests are allowed'
+        if not request.META.get("HTTP_X_REQUESTED_WITH", None) == "XMLHttpRequest":
+            self.error = "Only AJAX requests are allowed"
             self.raise_error()

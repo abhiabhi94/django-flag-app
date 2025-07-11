@@ -4,8 +4,8 @@ from django.db.models.signals import post_migrate
 
 
 class FlagConfig(AppConfig):
-    name = 'flag'
-    verbose_name = _('flag')
+    name = "flag"
+    verbose_name = _("flag")
 
     def ready(self):
         import flag.signals

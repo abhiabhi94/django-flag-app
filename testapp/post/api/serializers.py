@@ -5,23 +5,23 @@ from testapp.post.models import Post
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.HyperlinkedRelatedField(
-        view_name='user-detail',
+        view_name="user-detail",
         read_only=True,
-        lookup_field='username',
+        lookup_field="username",
     )
     slug = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = (
-            'url',
-            'id',
-            'slug',
-            'title',
-            'body',
-            'date',
-            'editdate',
-            'user',
+            "url",
+            "id",
+            "slug",
+            "title",
+            "body",
+            "date",
+            "editdate",
+            "user",
         )
 
     @staticmethod

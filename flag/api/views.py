@@ -14,16 +14,16 @@ class SetFlag(ContentTypeMixin, APIView):
 
     def _get_serializer_context(self):
         context = {}
-        context['model_obj'] = self.model_obj
-        context['user'] = self.request.user
+        context["model_obj"] = self.model_obj
+        context["user"] = self.request.user
         return context
 
     def post(self, request, *args, **kwargs):
         self.validate(self.request)
         response = process_flagging_request(user=request.user, model_obj=self.model_obj, data=self.data)
-        detail = {'detail': response['msg']}
+        detail = {"detail": response["msg"]}
 
-        if response['status']:  # 1 indicates bad request
+        if response["status"]:  # 1 indicates bad request
             return Response(status=status.HTTP_400_BAD_REQUEST, data=detail)
 
         flag = Flag.objects.get_flag(self.model_obj)

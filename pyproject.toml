@@ -56,8 +56,9 @@ include = [
     "pyproject.toml"
 ]
 
-[tool.isort]
-known_third_party = ["django", "rest_framework"]
+[tool.ruff]
+line-length = 120
+exclude = [".tox", ".git", "*/migrations/*", "*/static/CACHE/*", "docs"]
 
 [tool.coverage.run]
 branch = true

@@ -25,11 +25,9 @@ def unflagged(sender, instance, using, **kwargs):
 def create_permission_groups(sender, **kwargs):
     flag_ct = ContentType.objects.get_for_model(Flag)
     delete_flagged_perm, __ = Permission.objects.get_or_create(
-        codename='delete_flagged_content',
-        name=_('Can delete flagged content'),
-        content_type=flag_ct
+        codename="delete_flagged_content", name=_("Can delete flagged content"), content_type=flag_ct
     )
-    moderator_group, __ = Group.objects.get_or_create(name='flag_moderator')
+    moderator_group, __ = Group.objects.get_or_create(name="flag_moderator")
     moderator_group.permissions.add(delete_flagged_perm)
 
 

@@ -9,7 +9,7 @@ class FlagSignalTest(BaseFlagModelTest):
     def test_flagged_signal(self):
         user = self.user_2
         flag = self.create_flag(self.content_object_2, user)
-        FlagInstance.objects.create_flag(user=user, flag=flag, reason=FlagInstance.reason_values[0], info='')
+        FlagInstance.objects.create_flag(user=user, flag=flag, reason=FlagInstance.reason_values[0], info="")
         flag.refresh_from_db()
 
         self.assertEqual(flag.count, 1)
@@ -18,7 +18,7 @@ class FlagSignalTest(BaseFlagModelTest):
         # instance edited won't increase the flag count
         flag_instance = FlagInstance.objects.get(user=user, flag=flag)
         self.assertIsNotNone(flag_instance)
-        flag_instance.info = 'change value for test'
+        flag_instance.info = "change value for test"
         flag_instance.save()
         flag.refresh_from_db()
 
@@ -34,7 +34,7 @@ class FlagSignalTest(BaseFlagModelTest):
         self.assertEqual(flag.count, 0)
         self.assertEqual(flag.state, Flag.State.UNFLAGGED.value)
 
-    @patch.object(settings, 'FLAG_ALLOWED', 1)
+    @patch.object(settings, "FLAG_ALLOWED", 1)
     def test_adjust_flagged_contents(self):
         post_1 = self.create_post()
         post_2 = self.create_post()

@@ -29,7 +29,7 @@ class FlagAdminTest(BaseFlagTest):
         self.set_flag(model_obj=post)
         flag = Flag.objects.get_flag(post)
 
-        self.assertEqual(self.model_admin.link_to_content_object.short_description, 'Edit object')
+        self.assertEqual(self.model_admin.link_to_content_object.short_description, "Edit object")
         self.assertEqual(
             self.model_admin.link_to_content_object(flag),
             f"<a href='/admin/post/post/{post.id}/change/'>Link</a>",

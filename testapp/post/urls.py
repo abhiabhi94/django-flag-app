@@ -7,10 +7,10 @@ from .views import (
 )
 
 
-app_name = 'post'
+app_name = "post"
 
 urlpatterns = [
-    path('', PostListView.as_view(), name='postlist'),
-    path('createpost/', createpost_view, name='createpost'),
-    re_path(r'(?P<slug>[\w-]+)/$', PostDetailView.as_view(), name='postdetail'),
+    path("", PostListView.as_view(), name="postlist"),
+    path("createpost/", createpost_view, name="createpost"),
+    re_path(r"(?P<slug>[\w-]+)/$", PostDetailView.as_view(), name="postdetail"),
 ]

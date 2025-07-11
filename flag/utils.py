@@ -1,4 +1,5 @@
 """General purpose functions that provide utility throughout the application"""
+
 from django.contrib.auth import get_user_model
 from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
@@ -52,25 +53,18 @@ def process_flagging_request(*, user, model_obj, data):
             **This key will only be present when request succeeds.**
             `flag`(int): Non-Zero(1) indicates that flag is created.
     """
-    FlagInstance = apps.get_model('flag', 'FlagInstance')
+    FlagInstance = apps.get_model("flag", "FlagInstance")
 
-    response = {'status': 1}
+    response = {"status": 1}
     try:
         if FlagInstance.objects.set_flag(user, model_obj, **data):
-            response['msg'] = _(
-                'The content has been flagged successfully. '
-                'A moderator will review it shortly.'
-                )
-            response['flag'] = 1
+            response["msg"] = _("The content has been flagged successfully. A moderator will review it shortly.")
+            response["flag"] = 1
         else:
-            response['msg'] = _('The content has been unflagged successfully.')
+            response["msg"] = _("The content has been unflagged successfully.")
 
-        response.update({
-            'status': 0
-        })
+        response.update({"status": 0})
     except ValidationError as e:
-        response.update({
-            'msg': e.messages
-        })
+        response.update({"msg": e.messages})
 
     return response
