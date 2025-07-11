@@ -52,13 +52,13 @@ Install using ``pip``
 
     $ pip install django-flag-app
 
-If you want, you may install it from the source, grab the source code and run ``setup.py``.
+If you want, you may install it from the source, grab the source code and install it.
 
 .. code:: sh
 
     $ git clone git://github.com/abhiabhi94/django-flag-app.git
     $ cd django-flag-app
-    $ python setup.py install
+    $ pip install .
 
 Usage
 -----
