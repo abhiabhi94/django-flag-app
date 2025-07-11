@@ -42,6 +42,7 @@ version, release = _get_version_and_release()
 # ones.
 extensions = [
     'sphinx.ext.autosectionlabel',
+    'sphinx_rtd_theme',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
