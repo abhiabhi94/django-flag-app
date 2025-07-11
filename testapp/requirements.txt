@@ -1,5 +1,4 @@
 djangorestframework
-flake8
 Pillow
 pytest-django
 coverage

@@ -8,18 +8,18 @@ from testapp.post.forms import PostForm
 
 class PostListView(ListView):
     model = Post
-    template_name = 'post/postlist.html'
+    template_name = "post/postlist.html"
     paginate_by = 10
 
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'post/postdetail.html'
+    template_name = "post/postdetail.html"
 
 
-@login_required(login_url='profile:login')
+@login_required(login_url="profile:login")
 def createpost_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
@@ -28,5 +28,5 @@ def createpost_view(request):
             return redirect(post.get_absolute_url())
     else:
         form = PostForm
-    context = {'form': form}
-    return render(request, 'post/createpost.html', context)
+    context = {"form": form}
+    return render(request, "post/createpost.html", context)

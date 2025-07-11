@@ -6,9 +6,9 @@ from flag.conf import defaults as flag_settings
 
 _django_version = django.VERSION
 DEPRECATED_SETTINGS = {
-    'DEFAULT_FILE_STORAGE' if (4, 2) <= _django_version < (5, 1) else None,
-    'STATICFILES_STORAGE' if (4, 2) <= _django_version < (5, 1) else None,
-    'USE_L10N' if (4, 0) <= _django_version < (5, 0) else None,
+    "DEFAULT_FILE_STORAGE" if (4, 2) <= _django_version < (5, 1) else None,
+    "STATICFILES_STORAGE" if (4, 2) <= _django_version < (5, 1) else None,
+    "USE_L10N" if (4, 0) <= _django_version < (5, 0) else None,
 }
 
 

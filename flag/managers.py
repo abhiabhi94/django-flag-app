@@ -34,11 +34,7 @@ class FlagManager(models.Manager):
 
 class FlagInstanceManager(models.Manager):
     def _clean_reason(self, reason):
-        err = ValidationError(
-                _('%(reason)s is an invalid reason'),
-                params={'reason': reason},
-                code='invalid'
-                )
+        err = ValidationError(_("%(reason)s is an invalid reason"), params={"reason": reason}, code="invalid")
         try:
             reason = int(reason)
             if reason in self.model.reason_values:
@@ -56,9 +52,9 @@ class FlagInstanceManager(models.Manager):
             cleaned_info = info
             if not cleaned_info:
                 raise ValidationError(
-                    _('Please supply some information as the reason for flagging'),
-                    params={'info': info},
-                    code='required'
+                    _("Please supply some information as the reason for flagging"),
+                    params={"info": info},
+                    code="required",
                 )
         return cleaned_reason, cleaned_info
 
@@ -68,26 +64,22 @@ class FlagInstanceManager(models.Manager):
             self.create(flag=flag, user=user, reason=cleaned_reason, info=cleaned_info)
         except IntegrityError:
             raise ValidationError(
-                    _('This content has already been flagged by the user (%(user)s)'),
-                    params={'user': user},
-                    code='invalid'
-                )
+                _("This content has already been flagged by the user (%(user)s)"), params={"user": user}, code="invalid"
+            )
 
     def delete_flag(self, user, flag):
         try:
             self.get(user=user, flag=flag).delete()
         except self.model.DoesNotExist:
             raise ValidationError(
-                _('This content has not been flagged by the user (%(user)s)'),
-                params={'user': user},
-                code='invalid'
+                _("This content has not been flagged by the user (%(user)s)"), params={"user": user}, code="invalid"
             )
 
     def set_flag(self, user, model_obj, **kwargs):
-        Flag = apps.get_model('flag', 'Flag')
+        Flag = apps.get_model("flag", "Flag")
         flag_obj = Flag.objects.get_flag(model_obj)
-        info = kwargs.get('info', None)
-        reason = kwargs.get('reason', None)
+        info = kwargs.get("info", None)
+        reason = kwargs.get("reason", None)
 
         if reason:
             self.create_flag(user, flag_obj, reason, info)

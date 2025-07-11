@@ -18,10 +18,10 @@ class Post(models.Model):
     flags = GenericRelation(Flag)
 
     class Meta:
-        ordering = ['-editdate', '-date']
+        ordering = ["-editdate", "-date"]
 
     def get_absolute_url(self):
-        return reverse('post:postdetail', kwargs={'slug': self.slug})
+        return reverse("post:postdetail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return f"By {self.user}: {self.title[:25]}"

@@ -7,25 +7,17 @@ from testapp.user_profile.models import UserProfile
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('display_name', 'image', 'birth_date')
+        fields = ("display_name", "image", "birth_date")
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='username')
+    url = serializers.HyperlinkedIdentityField(view_name="user-detail", lookup_field="username")
 
-    post_set = serializers.HyperlinkedRelatedField(view_name='post-detail', read_only=True, many=True)
+    post_set = serializers.HyperlinkedRelatedField(view_name="post-detail", read_only=True, many=True)
     profile = UserProfileSerializer()
 
     class Meta:
         model = User
-        fields = (
-            'url',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'post_set',
-            'profile'
-        )
+        fields = ("url", "id", "username", "first_name", "last_name", "post_set", "profile")
 
-        lookup_field = 'username'
+        lookup_field = "username"

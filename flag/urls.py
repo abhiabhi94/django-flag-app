@@ -2,8 +2,8 @@ from django.urls import path
 
 from flag.views import SetFlag
 
-app_name = 'flag'
+app_name = "flag"
 
 urlpatterns = [
-    path('', SetFlag.as_view(), name='flag'),
+    path("", SetFlag.as_view(), name="flag"),
 ]

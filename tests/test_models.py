@@ -32,7 +32,7 @@ class FlagModelTest(BaseFlagModelTest):
         self.assertRaises(ValidationError, flag.get_clean_state, 100)
 
         # not int
-        self.assertRaises(ValidationError, flag.get_clean_state, 'Not int')
+        self.assertRaises(ValidationError, flag.get_clean_state, "Not int")
 
         # None
         self.assertRaises(ValidationError, flag.get_clean_state, None)
@@ -49,13 +49,13 @@ class FlagModelTest(BaseFlagModelTest):
         flag.refresh_from_db()
         self.assertEqual(True, flag.is_flagged)
 
-    @patch('flag.models.Flag.get_clean_state')
+    @patch("flag.models.Flag.get_clean_state")
     def test_get_verbose_state(self, mocked_get_clean_state):
         flag = self.flag
         state = flag.State.FLAGGED
         mocked_get_clean_state.return_value = state
 
-        self.assertEqual(flag.get_verbose_state(state), flag.STATE_CHOICES[state-1][1])
+        self.assertEqual(flag.get_verbose_state(state), flag.STATE_CHOICES[state - 1][1])
 
         mocked_get_clean_state.return_value = 100
         self.assertIsNone(flag.get_verbose_state(100))
@@ -89,7 +89,7 @@ class FlagModelTest(BaseFlagModelTest):
         self.assertEqual(self.flag.state, Flag.State.FLAGGED.value)
 
         # set FLAG_ALLOWED to 1
-        patch.object(settings, 'FLAG_ALLOWED', 1).start()
+        patch.object(settings, "FLAG_ALLOWED", 1).start()
         self.flag.count = 0
         self.flag.save()
         self.flag.increase_count()
@@ -135,11 +135,7 @@ class FlagManagerTest(BaseFlagModelTest):
 class FlagInstanceModelTest(BaseFlagModelTest):
     def test_create_flag_instance(self):
         self.assertIsNotNone(
-            FlagInstance.objects.create(
-                flag=self.flag,
-                reason=FlagInstance.reason_values[0],
-                user=self.user_1
-            )
+            FlagInstance.objects.create(flag=self.flag, reason=FlagInstance.reason_values[0], user=self.user_1)
         )
 
 
@@ -148,13 +144,11 @@ class TestFlagInstanceManager(BaseFlagModelTest):
         flag = self.flag
 
         with self.assertRaises(ValidationError) as error:
-            FlagInstance.objects.create(
-                flag=flag,
-                reason=FlagInstance.reason_values[-1]
-            )
+            FlagInstance.objects.create(flag=flag, reason=FlagInstance.reason_values[-1])
         self.assertEqual(
-            error.exception.message_dict['info'],
-            ['Please provide some information why you choose to report the content'])
+            error.exception.message_dict["info"],
+            ["Please provide some information why you choose to report the content"],
+        )
 
     def test_clean_reason_for_invalid_values(self):
         flag = self.flag
@@ -165,19 +159,19 @@ class TestFlagInstanceManager(BaseFlagModelTest):
         with self.assertRaises(ValidationError) as error:
             FlagInstance.objects.create_flag(user=user, flag=flag, reason=reason, info=info)
 
-        self.assertEqual(error.exception.messages, [f'{reason} is an invalid reason'])
+        self.assertEqual(error.exception.messages, [f"{reason} is an invalid reason"])
 
-        reason = 'r'
+        reason = "r"
         with self.assertRaises(ValidationError) as error:
             FlagInstance.objects.create_flag(user=user, flag=flag, reason=reason, info=info)
 
-        self.assertEqual(error.exception.messages, [f'{reason} is an invalid reason'])
+        self.assertEqual(error.exception.messages, [f"{reason} is an invalid reason"])
 
         reason = None
         with self.assertRaises(ValidationError) as error:
             FlagInstance.objects.create_flag(user=user, flag=flag, reason=reason, info=info)
 
-        self.assertEqual(error.exception.messages, [f'{reason} is an invalid reason'])
+        self.assertEqual(error.exception.messages, [f"{reason} is an invalid reason"])
 
     def test_create_flag_for_flagging_twice(self):
         user = self.user_1
@@ -189,7 +183,7 @@ class TestFlagInstanceManager(BaseFlagModelTest):
         with self.assertRaises(ValidationError) as error:
             FlagInstance.objects.create_flag(user, flag, reason, info)
 
-        self.assertEqual(error.exception.messages, [f'This content has already been flagged by the user ({user})'])
+        self.assertEqual(error.exception.messages, [f"This content has already been flagged by the user ({user})"])
 
     def test_delete_flag_without_flagging(self):
         user = self.user_1
@@ -198,4 +192,4 @@ class TestFlagInstanceManager(BaseFlagModelTest):
         with self.assertRaises(ValidationError) as error:
             FlagInstance.objects.delete_flag(user, flag)
 
-        self.assertEqual(error.exception.messages, [f'This content has not been flagged by the user ({user})'])
+        self.assertEqual(error.exception.messages, [f"This content has not been flagged by the user ({user})"])
