@@ -1,6 +1,39 @@
 Changelog
 =========
+`v2.0.0 <https://github.com/abhiabhi94/django-flag-app/tree/v2.0.0>`__
+
+`Full
+Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.3.0...v2.0.0>`__
+
+We sincerely apologize for the long delay since our last release. This major version brings
+the package up to date with the latest Django and Python versions while removing support
+for end-of-life versions.
+
+**Breaking Changes**
+
+- **DROPPED** support for Python ``3.6``, ``3.7``, ``3.8``, and ``3.9`` - these versions have reached end-of-life
+- **DROPPED** support for Django ``2.2``, ``3.0``, ``3.1``, and ``3.2`` - these versions are no longer supported by Django
+- Minimum Python version is now ``3.10``
+- Minimum Django version is now ``4.2`` (LTS)
+
+**Features**
+
+- **NEW** support for Python ``3.11``, ``3.12``, and ``3.13``
+- **NEW** support for Django ``4.2`` (LTS), ``5.0``, ``5.1``, and ``5.2``
+- Removed deprecated Django features and compatibility code for better performance
+
+**Bug Fixes**
+
+- Fix issues with flag form when selecting "something else" reason - requests weren't being sent and other reasons couldn't be selected in the same session
+- Fix documentation build issues with sphinx-rtd-theme dependency
+
+**Chores**
+
+- Updated development tooling (switched from flake8/isort to ruff)
+- Migrated from ``setup.py`` to ``pyproject.toml`` for modern packaging
+
 `v1.3.0 <https://github.com/abhiabhi94/django-flag-app/tree/v1.3.0>`__
+----------------------------------------------------------------------------------------
 
 `Full
 Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.2.1...v1.3.0>`__
