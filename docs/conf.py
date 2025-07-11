@@ -11,22 +11,17 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os.path
+import tomllib
 
 
 PROJECT_ROOT = os.path.dirname(os.getcwd())
 
 
 def _get_version_and_release():
-    with open(os.path.join(PROJECT_ROOT, 'setup.cfg'), 'r') as fp:
-        for line in fp:
-            if line.startswith('version = '):
-                version_line = line.strip()
-                break
-        else:
-            raise AssertionError('Version can not be determined')
-
+    with open(os.path.join(PROJECT_ROOT, 'pyproject.toml'), 'rb') as fp:
+        data = tomllib.load(fp)
+        version = data['project']['version']
     # The short X.Y version.
-    _, version = version_line.split(' = ')
     # The full version, including alpha/beta/rc tags.
     release = version
     return version, release
