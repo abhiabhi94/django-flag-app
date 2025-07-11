@@ -1,6 +1,7 @@
 Changelog
 =========
 `v2.0.0 <https://github.com/abhiabhi94/django-flag-app/tree/v2.0.0>`__
+----------------------------------------------------------------------------------------
 
 `Full
 Changelog <https://github.com/abhiabhi94/django-flag-app/compare/v1.3.0...v2.0.0>`__
