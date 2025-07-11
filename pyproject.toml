@@ -1,3 +1,77 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-flag-app"
+version = "1.3.0"
+description = "A pluggable django application that adds the ability for users to flag(or report) your models"
+readme = "README.rst"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    {name = "Abhyudai"},
+]
+keywords = ["django", "flag", "report", "moderate"]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = [
+    "django",
+]
+
+[project.urls]
+Documentation = "https://django-flag-app.readthedocs.io"
+"Source Code" = "https://github.com/abhiabhi94/django-flag-app"
+Homepage = "https://github.com/abhiabhi94/django-flag-app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["flag"]
+include = [
+    "flag/static/**/*",
+    "flag/templates/**/*",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "flag/",
+    "README.rst",
+    "LICENSE",
+    "CHANGELOG.rst",
+    "pyproject.toml"
+]
+
+[tool.isort]
+known_third_party = ["django", "rest_framework"]
+
+[tool.coverage.run]
+branch = true
+source = ["flag"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.pytest.ini_options]
+django_find_project = false
+addopts = "-p no:doctest --ds=testapp.settings.test"
+
+[tool.sphinx]
+source-dir = "docs"
+build-dir = "docs/_build"
+all-files = true
