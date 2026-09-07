@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
-from flag.signals import adjust_flagged_content
 from flag.conf import settings
+from flag.signals import adjust_flagged_content
 from tests.base import BaseFlagModelTest, Flag, FlagInstance
 
 
