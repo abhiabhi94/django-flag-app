@@ -1,11 +1,10 @@
 from django.urls import path, re_path
 
 from .views import (
+    PostDetailView,
     PostListView,
     createpost_view,
-    PostDetailView,
 )
-
 
 app_name = "post"
 

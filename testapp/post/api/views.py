@@ -3,9 +3,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
-from testapp.post.models import Post
-from testapp.post.api.serializers import PostSerializer
 from testapp.post.api.permissions import IsOwnerOrReadOnly
+from testapp.post.api.serializers import PostSerializer
+from testapp.post.models import Post
 
 
 class PostList(generics.ListCreateAPIView):

@@ -10,7 +10,6 @@ from rest_framework.test import APITestCase
 from flag.models import Flag, FlagInstance
 from testapp.post.models import Post
 
-
 User = get_user_model()
 
 
