@@ -85,7 +85,7 @@ class TestSetFlag(BaseFlagViewTest):
         response = self.client.post(url, data=self.data)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "{}?next={}".format(settings.LOGIN_URL, url))
+        self.assertEqual(response.url, f"{settings.LOGIN_URL}?next={url}")
 
     def test_incorrect_reason(self):
         """Test response when incorrect reason is passed"""

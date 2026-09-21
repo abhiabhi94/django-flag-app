@@ -1,5 +1,5 @@
-from django.urls import path, re_path
 from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path, re_path
 
 from testapp.user_profile import views
 
