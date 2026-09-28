@@ -1,8 +1,8 @@
-from django.db import models
-from django.urls import reverse
-from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
+from django.db import models
+from django.template.defaultfilters import slugify
+from django.urls import reverse
 
 from flag.models import Flag
 
@@ -35,7 +35,7 @@ class Post(models.Model):
             unique_slug = self.slug = slugify(_title)
             count = 1
             while self.__class__.objects.filter(slug=unique_slug).exists():
-                unique_slug = "{0}-{1}".format(self.slug, count)
+                unique_slug = f"{self.slug}-{count}"
                 count += 1
             self.slug = unique_slug
         super().save(*args, **kwargs)
