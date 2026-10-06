@@ -3,7 +3,6 @@ from rest_framework import serializers
 
 from flag.models import Flag
 
-
 User = get_user_model()
 
 
