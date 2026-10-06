@@ -1,9 +1,9 @@
-from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from flag.mixins import ContentTypeMixin
 from flag.api.serializers import FlagSerializer
+from flag.mixins import ContentTypeMixin
 from flag.models import Flag
 from flag.utils import process_flagging_request
 
