@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from django.contrib.contenttypes.models import ContentType
 
-from flag.utils import get_content_type, get_model_object, process_flagging_request, get_user_for_model
+from flag.utils import get_content_type, get_model_object, get_user_for_model, process_flagging_request
 from tests.base import BaseFlagTest, Post
 
 
