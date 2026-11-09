@@ -1,7 +1,6 @@
 "These settings make the tests run significantly faster"
 
-from .base import *  # noqa:F401, F403
-
+from .base import *
 
 DATABASES = {
     "default": {
