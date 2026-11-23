@@ -8,8 +8,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from flag.managers import FlagInstanceManager, FlagManager
 from flag.conf import settings
+from flag.managers import FlagInstanceManager, FlagManager
 
 User = settings.AUTH_USER_MODEL
 
@@ -146,4 +146,4 @@ class FlagInstance(models.Model):
 
     def save(self, *args, **kwargs):
         self.clean()
-        super(FlagInstance, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)

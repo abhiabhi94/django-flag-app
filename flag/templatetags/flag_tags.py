@@ -4,8 +4,8 @@ from django import template
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 
-from flag.models import Flag, FlagInstance
 from flag.conf import settings
+from flag.models import Flag, FlagInstance
 
 register = template.Library()
 
