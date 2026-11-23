@@ -1,9 +1,9 @@
-from django.views import View
 from django.http.response import JsonResponse
+from django.views import View
 from rest_framework.views import APIView
 
-from tests.base import BaseFlagMixinsTest, Post
 from flag.mixins import AJAXMixin, ContentTypeMixin
+from tests.base import BaseFlagMixinsTest, Post
 
 
 class MockedAJAXView(AJAXMixin, View):
